@@ -13,35 +13,19 @@ import rightPanel from './panels/rightPanel.vue';
 </script>
 <style scoped lang="less">
 .flightOverview {
-  position: absolute;
-  left: 0px;
-  top: 300px;
-  width: 2880px;
-  bottom: 0px;
-//   background: url('~@/assets/flightOverview/bg.png') no-repeat center center;
+    display: flex;
+    background-color: #11101e;
 }
 
 .leftPanel {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  right: 786px;
-  bottom: 0px;
+    flex: 4;
 }
 
 .middlePanel {
-  position: absolute;
-  left: 2114px;
-  top: 0px;
-  right: 210px;
-  bottom: 34px;
+    flex: 1;
 }
 
 .rightPanel {
-  position: absolute;
-  right: 30px;
-  top: 0px;
-  width: 180px;
-  bottom: 34px;
+    flex: 1;
 }
 </style>
