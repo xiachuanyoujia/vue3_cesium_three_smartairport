@@ -3,7 +3,7 @@
         airportOperation
     </div>
 </template>
-<script lang="ts">
+<script lang="ts" setup>
 // import { ref } from 'vue'
 </script>
 <style>

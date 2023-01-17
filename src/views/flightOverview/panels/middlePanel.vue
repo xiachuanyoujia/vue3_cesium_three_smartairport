@@ -1,10 +1,9 @@
 <template>
     <div>
-        airlinerMaintain
+        middlePanel
     </div>
 </template>
 <script lang="ts" setup>
-
 </script>
 <style>
 </style>

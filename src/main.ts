@@ -1,5 +1,9 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
+import { createApp } from "vue";
+import App from "./App.vue";
+import router from "./router";
+import Echarts from "vue-echarts";
 
-createApp(App).use(router).mount('#app')
+const app = createApp(App)
+app.component("v-chart", Echarts);
+
+createApp(App).use(router).mount("#app");

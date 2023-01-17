@@ -8,8 +8,10 @@
   },
   "dependencies": {
     "core-js": "^3.8.3",
+    "dayjs": "^1.11.7",
     "vue": "^3.2.13",
     "vue-class-component": "^8.0.0-0",
+    "vue-echarts": "^6.5.1",
     "vue-router": "^4.0.3"
   },
   "devDependencies": {

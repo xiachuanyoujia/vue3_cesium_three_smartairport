@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import views from "../views/index.vue";
+
 import flightOverview from "../views/flightOverview/index.vue";
 import airlinerMaintain from "../views/airlinerMaintain/index.vue";
 import airportOperation from "../views/airportOperation/index.vue";
@@ -29,7 +30,7 @@ const routes: Array<RouteRecordRaw> = [
         path: "/airportOperation",
         name: "airportOperation",
         component: airportOperation,
-      }
+      },
     ],
   },
 ];
