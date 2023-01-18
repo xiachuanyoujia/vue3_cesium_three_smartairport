@@ -45,31 +45,31 @@ const flightCount = [
     43234, 19873, 49017, 82975, 12999, 23964, 30826, 43982, 69234, 42971, 32562, 43252,
 ]
 const reasonData = [
-        {
-          name: '乘客原因',
-          value: 17,
-        },
-        {
-          name: '地面保障',
-          value: 31,
-        },
-        {
-          name: '飞机故障',
-          value: 9,
-        },
-        {
-          name: '流量控制',
-          value: 8,
-        },
-        {
-          name: '空域限制',
-          value: 48,
-        },
-        {
-          name: '天气原因',
-          value: 52,
-        },
-      ]
+    {
+        name: '乘客原因',
+        value: 17,
+    },
+    {
+        name: '地面保障',
+        value: 31,
+    },
+    {
+        name: '飞机故障',
+        value: 9,
+    },
+    {
+        name: '流量控制',
+        value: 8,
+    },
+    {
+        name: '空域限制',
+        value: 48,
+    },
+    {
+        name: '天气原因',
+        value: 52,
+    },
+]
 
 
 </script>
@@ -126,15 +126,15 @@ const reasonData = [
     top: 268px;
     right: 0px;
     height: 286px;
+}
 
-    .title {
-        height: 30px;
-        font-size: 20px;
-        color: #ffffff;
-        line-height: 30px;
-        padding-left: 35px;
-        text-align: left;
-    }
+.title {
+    height: 30px;
+    font-size: 20px;
+    color: #ffffff;
+    line-height: 30px;
+    padding-left: 35px;
+    text-align: left;
 }
 
 .reason {
@@ -142,5 +142,14 @@ const reasonData = [
     top: 574px;
     right: 0px;
     height: 372px;
+}
+
+.basePiechart {
+    position: absolute;
+    left: 10px;
+    top: 50px;
+    right: 10px;
+    bottom: 10px;
+    background: url('/src/assets/echarts/feiji.png') no-repeat center center;
 }
 </style>
