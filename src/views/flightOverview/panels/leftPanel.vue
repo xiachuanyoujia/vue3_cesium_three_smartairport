@@ -85,7 +85,7 @@ const reasonData = [
 .Overview {
     position: absolute;
     top: 0px;
-    left: 0px;
+    left: 2%;
     display: flex;
 
     .OverviewData {
@@ -124,7 +124,7 @@ const reasonData = [
 .Trend {
     position: absolute;
     top: 268px;
-    left: 0px;
+    left: 2%;
     height: 286px;
 }
 
@@ -140,7 +140,7 @@ const reasonData = [
 .reason {
     position: absolute;
     top: 574px;
-    left: 0px;
+    left: 2%;
     height: 372px;
 }
 
