@@ -102,18 +102,18 @@ const flightData = [
         toAddress: "三亚",
         state: "航班计划"
     },
-    {
-        id: 7,
-        icon: "zhongguogh.png",
-        name: "中国国际航空",
-        nummber: "CZ6508",
-        boardingPort: "F01",
-        takeoffTime: "14:15",
-        fromAddress: "上海",
-        landingTime: "17:45",
-        toAddress: "北京",
-        state: "航班起飞"
-    }
+    // {
+    //     id: 7,
+    //     icon: "zhongguogh.png",
+    //     name: "中国国际航空",
+    //     nummber: "CZ6508",
+    //     boardingPort: "F01",
+    //     takeoffTime: "14:15",
+    //     fromAddress: "上海",
+    //     landingTime: "17:45",
+    //     toAddress: "北京",
+    //     state: "航班起飞"
+    // }
 ]
 const monthData = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
 const normalData = [9, 6, 4, 8, 6, 7, 9, 9, 4, 5, 6, 4]
@@ -123,10 +123,11 @@ const abnormalData = [2, 4, 5, 2, 3, 4, 6, 1, 7, 8, 3, 1]
 </script>
 <style scoped lang="less">
 .top {
-    height: 100%;
+    height: 80%;
     background: url("/src/assets/echarts/feiJiHangBanBJ.png") no-repeat;
-    background-size: 100% 95%;
+    background-size: 100% 100%;
     opacity: 0.7;
+    overflow: hidden;
     position: relative;
 
     div:nth-child(1) {
@@ -160,17 +161,21 @@ const abnormalData = [2, 4, 5, 2, 3, 4, 6, 1, 7, 8, 3, 1]
     }
 }
 
-.flightList {
-    // position: absolute;
-    // left: 20px;
-    // top: 169px;
-    // right: 20px;
-    // bottom: 20px;
-    /* background: chocolate; */
-    overflow-y: auto;
-    max-height: 500px;
-}
-.flightList::-webkit-scrollbar{
-    width: 0;
+.bottom {
+    right: 0px;
+    height: 266px;
+    background: url("/src/assets/echarts/feiJiHangBanBJ.png") no-repeat;
+    background-size: 100% 100%;
+    opacity: 0.7;
+    .title {
+        width: 100%;
+        height: 14%;
+        font-size: 20px;
+        color: #FFFFFF;
+        line-height: 21px;
+        padding-left: 35px;
+        text-align: left;
+        line-height: 30px;
+    }
 }
 </style>

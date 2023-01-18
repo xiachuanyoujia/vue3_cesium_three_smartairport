@@ -9,7 +9,7 @@
                 <span>{{ item.takeoffTime }}</span>
                 <span>{{ item.fromAddress }}</span>
             </div>
-            <div class="cenCenter">---{{ item.boardingPort }}---</div>
+            <div class="cenCenter">--{{ item.boardingPort }}--</div>
             <div class="cenRight">
                 <span>{{ item.landingTime }}</span>
                 <span>{{ item.toAddress }}</span>
