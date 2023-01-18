@@ -19,25 +19,57 @@
         </div>
         <!-- 今年航班起降架次趋势 -->
         <div class="Trend OverviewTrendreason">
-            <!-- <div class="title">今年航班起降架次趋势</div>
-            <baseHistogram class="baseHistogram" :dataX="month" :dataY="flightCount"></baseHistogram> -->
+            <div class="title">今年航班起降架次趋势</div>
+            <baseHistogram class="baseHistogram" :dataX="month" :dataY="flightCount" />
         </div>
         <!-- 飞机延误原因 -->
         <div class="reason OverviewTrendreason">
-            <!-- <div class="title">飞机延误原因</div>
+            <div class="title">飞机延误原因</div>
             <div></div>
-            <basePiechart class="basePiechart" :pieData="reasonData"></basePiechart> -->
+            <basePiechart class="basePiechart" :pieData="reasonData"></basePiechart>
         </div>
     </div>
 </template>
 <script lang="ts" setup>
 import flightOverview from "/src/components/flightOverview.vue";
 import baseRoundProgress from "/src/components/baseRoundProgress.vue";
+import baseHistogram from "/src/components/baseHistogram.vue";
+import basePiechart from "/src/components/basePiechart.vue";
 
 const delayNun = 18 //延误航班
 const cancelNum = 5 //取消航班
 const allNum = 515  //今日航班
 const punctualityRate = 71  //准点率
+const month = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
+const flightCount = [
+    43234, 19873, 49017, 82975, 12999, 23964, 30826, 43982, 69234, 42971, 32562, 43252,
+]
+const reasonData = [
+        {
+          name: '乘客原因',
+          value: 17,
+        },
+        {
+          name: '地面保障',
+          value: 31,
+        },
+        {
+          name: '飞机故障',
+          value: 9,
+        },
+        {
+          name: '流量控制',
+          value: 8,
+        },
+        {
+          name: '空域限制',
+          value: 48,
+        },
+        {
+          name: '天气原因',
+          value: 52,
+        },
+      ]
 
 
 </script>
@@ -45,8 +77,9 @@ const punctualityRate = 71  //准点率
 .OverviewTrendreason {
     width: 360px;
     height: 228px;
-    background-color: #182140;
-    opacity:0.5;
+    background: url("/src/assets/echarts/feiJiHangBanBJ.png") no-repeat;
+    background-size: 100% 100%;
+    opacity: 0.7;
 }
 
 .Overview {
@@ -77,7 +110,8 @@ const punctualityRate = 71  //准点率
         margin-top: 20px;
         margin-left: 15%;
         flex-direction: column;
-        span{
+
+        span {
             margin-top: 10px;
             margin-left: 20px;
             font-size: 16px;
@@ -92,6 +126,15 @@ const punctualityRate = 71  //准点率
     top: 268px;
     right: 0px;
     height: 286px;
+
+    .title {
+        height: 30px;
+        font-size: 20px;
+        color: #ffffff;
+        line-height: 30px;
+        padding-left: 35px;
+        text-align: left;
+    }
 }
 
 .reason {
