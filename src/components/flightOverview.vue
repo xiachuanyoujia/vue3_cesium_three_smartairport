@@ -1,8 +1,8 @@
 <template>
-    <div id="flyOverview"></div>
+    <div id="flyOverview" :style="{ width: '100%', height: '100%' }"></div>
 </template>
 <script lang="ts" setup>
-import { reactive, ref, onMounted } from 'vue'
+import { reactive, ref, onMounted, onBeforeUnmount } from 'vue'
 
 import * as echarts from 'echarts/core';
 import { use } from 'echarts/core';
@@ -16,6 +16,10 @@ echarts.registerMap('world', datajson)
 
 onMounted(() => {
     init()
+})
+
+onBeforeUnmount(() => {
+    window.onresize = null
 })
 
 const flyOverview = reactive(
@@ -381,6 +385,10 @@ const init = () => {
     flyOverview.series = series;
     let myChart = echarts.init(document.getElementById('flyOverview'))
     myChart.setOption(flyOverview);
+    window.onresize = function () {
+        //自适应大小, 不用的话不会自适应大小。
+        myChart.resize();
+    };
 }
 
 

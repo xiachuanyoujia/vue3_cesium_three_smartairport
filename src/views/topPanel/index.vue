@@ -48,7 +48,8 @@ const navigation = reactive(
     [
         {
             name: '航班总览',
-            path: 'flightOverview',
+            // path: 'flightOverview',
+            path: '/',
         },
         {
             name: '机场运行',

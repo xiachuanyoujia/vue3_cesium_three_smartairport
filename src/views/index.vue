@@ -1,11 +1,20 @@
 <template>
     <div class="main">
-        <div><topPanel /></div>
+        <div>
+            <topPanel />
+        </div>
     </div>
+
+    <!-- <router-link to="">
+        <flightOverview />
+    </router-link> -->
+
     <router-view/>
+    
 </template>
 <script lang="ts" setup>
 import topPanel from './topPanel/index.vue'
+import flightOverview from "/src/views/flightOverview/index.vue";
 </script>
 <style>
 * {

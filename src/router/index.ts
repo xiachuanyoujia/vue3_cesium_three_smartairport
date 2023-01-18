@@ -15,9 +15,12 @@ const routes: Array<RouteRecordRaw> = [
     path: "/",
     name: "views",
     component: views,
+    // name: "flightOverview",
+    // component: flightOverview,
     children: [
       {
-        path: "/flightOverview",
+        // path: "/flightOverview",
+        path: "/",
         name: "flightOverview",
         component: flightOverview,
       },

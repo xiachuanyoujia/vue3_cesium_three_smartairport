@@ -2,7 +2,7 @@
     <div class="flightOverview">
         <leftPanel class="leftPanel"></leftPanel>
         <middlePanel class="middlePanel"></middlePanel>
-        <rightPanel class="rightPanel"></rightPanel>
+        <!-- <rightPanel class="rightPanel"></rightPanel> -->
     </div>
 </template>
 <script lang="ts" setup>
@@ -14,6 +14,7 @@ import rightPanel from './panels/rightPanel.vue';
 <style scoped lang="less">
 .flightOverview {
     display: flex;
+    height: 100vh;
     background-color: #11101e;
 }
 
@@ -23,9 +24,10 @@ import rightPanel from './panels/rightPanel.vue';
 
 .middlePanel {
     flex: 1;
+    margin-right: 3%;
 }
 
-.rightPanel {
-    flex: 1;
-}
+// .rightPanel {
+//     flex: 1;
+// }
 </style>
