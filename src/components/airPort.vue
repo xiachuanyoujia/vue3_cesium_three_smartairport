@@ -5,10 +5,17 @@
 import { ref, reactive, onMounted, render } from 'vue'
 import * as THREE from "three"
 import { Mesh } from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 
 let scene = null
 let renderer = null
 let camera = null
+let controls = null
+
+let gltfLoader = null
+let dracoLoader = null
 
 const dom = ref()
 
@@ -18,6 +25,8 @@ onMounted(() => {
     renderScene()
     addAxesHelper()
     window.addEventListener('resize', onWindowResize)
+
+
 })
 
 const init = () => {
@@ -31,13 +40,20 @@ const init = () => {
     camera = new THREE.PerspectiveCamera(45, dom.value.offsetWidth / dom.value.offsetHeight, 0.1, 1000)
     camera.position.z = 5
     dom.value.appendChild(renderer.domElement)
+
+    gltfLoader = new GLTFLoader();
+    dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath('examples/js/libs/draco/');
+    gltfLoader.setDRACOLoader(dracoLoader);
+
+    controls = new OrbitControls(camera, renderer.domElement)
 }
 
 //测试立方体
 const addTestCube = () => {
     const boxGeometry = new THREE.BoxGeometry(1, 1, 1)
     const boxMaterial = new THREE.MeshBasicMaterial({
-        color: 0x00ff00,
+        color: 0x00ff00, 
     })
     const cube = new Mesh(boxGeometry, boxMaterial)
     cube.position.set(1, 1, 1)
@@ -48,6 +64,8 @@ const addTestCube = () => {
 function renderScene() {
     requestAnimationFrame(renderScene.bind(renderScene))
     renderer.render(scene, camera)
+
+    controls.update()
 }
 
 //场景自适应
@@ -60,7 +78,7 @@ const onWindowResize = () => {
 //添加坐标轴
 const addAxesHelper = () => {
     let axesHelper = new THREE.AxesHelper(300)
-    axesHelper.position.set(0,0,0)
+    axesHelper.position.set(0, 0, 0)
     scene.add(axesHelper)
 }
 
