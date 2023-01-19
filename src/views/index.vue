@@ -3,6 +3,7 @@
         <div>
             <topPanel />
         </div>
+        <airPort></airPort>
     </div>
 
     <!-- <router-link to="">
@@ -15,6 +16,7 @@
 <script lang="ts" setup>
 import topPanel from './topPanel/index.vue'
 import flightOverview from "/src/views/flightOverview/index.vue";
+import airPort from "../components/airPort.vue";
 </script>
 <style>
 * {
