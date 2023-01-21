@@ -35,11 +35,19 @@ onMounted(() => {
 const init = () => {
     dom.value = document.getElementById('container')
     scene = new THREE.Scene()
-    renderer = new THREE.WebGL1Renderer()
+    renderer = new THREE.WebGL1Renderer({
+        antialias: true,
+        alpha: true,
+        logarithmicDepthBuffer: true,
+    })
+    renderer.outputEncoding = THREE.sRGBEncoding
     renderer.setSize(dom.value.offsetWidth, dom.value.offsetHeight)
 
     camera = new THREE.PerspectiveCamera(45, dom.value.offsetWidth / dom.value.offsetHeight, 0.1, 1000)
-    camera.position.z = 5
+    
+    //设置相机初始位置
+    camera.position.set(-70.87587075520202, 11.950535661109116, 4.246782867351376) 
+
     dom.value.appendChild(renderer.domElement)
 
     gltfLoader = new GLTFLoader();
@@ -48,6 +56,8 @@ const init = () => {
     gltfLoader.setDRACOLoader(dracoLoader);
 
     controls = new OrbitControls(camera, renderer.domElement)
+    controls.maxPolarAngle = 0.4 * Math.PI;
+
 }
 
 //测试立方体
@@ -89,9 +99,79 @@ const addAirort = () => {
         })
     });
 
-    Promise.all([balloonCableCar, fourWingsPropeller]).then((resolve) => {
+    //汽车
+    let car = new Promise((resolve) => {
+        gltfLoader.load('/models/CesiumMilkTruck.glb', gltf => {
+            gltf.scene.traverse(child => {
+                if (child.isMesh) {
+                    child.material.alphaTest = 1
+                    child.material.side = THREE.DoubleSide;
+                }
+            })
+            resolve(gltf.scene);
+        })
+    });
+
+    //飞机
+    let aircraft = new Promise((resolve) => {
+        gltfLoader.load('/models/Cesium_Air.glb', gltf => {
+            gltf.scene.traverse(child => {
+                if (child.isMesh) {
+                    child.material.alphaTest = 1
+                    child.material.side = THREE.DoubleSide;
+                }
+            })
+            resolve(gltf.scene);
+        })
+    });
+
+    //人物
+    let figure = new Promise((resolve) => {
+        gltfLoader.load('/models/Cesium_Man.glb', gltf => {
+            gltf.scene.traverse(child => {
+                if (child.isMesh) {
+                    child.material.alphaTest = 1
+                    child.material.side = THREE.DoubleSide;
+                }
+            })
+            resolve(gltf.scene);
+        })
+    });
+
+    //装甲车
+    let armoredCar = new Promise((resolve) => {
+        gltfLoader.load('/models/GroundVehicle.glb', gltf => {
+            gltf.scene.traverse(child => {
+                if (child.isMesh) {
+                    child.material.alphaTest = 1
+                    child.material.side = THREE.DoubleSide;
+                }
+            })
+            resolve(gltf.scene);
+        })
+    });
+
+    //哨塔
+    let tower = new Promise((resolve) => {
+        gltfLoader.load('/models/Wood_Tower.glb', gltf => {
+            gltf.scene.traverse(child => {
+                if (child.isMesh) {
+                    child.material.alphaTest = 1
+                    child.material.side = THREE.DoubleSide;
+                }
+            })
+            resolve(gltf.scene);
+        })
+    });
+
+    Promise.all([balloonCableCar, fourWingsPropeller,car,aircraft,figure,armoredCar,tower]).then((resolve) => {
         scene.add(resolve[0])
         scene.add(resolve[1])
+        scene.add(resolve[2])
+        scene.add(resolve[3])
+        scene.add(resolve[4])
+        scene.add(resolve[5])
+        scene.add(resolve[6])
     }).catch(err => {
         console.log("添加模型抛错err", err)
     })
@@ -114,6 +194,8 @@ function renderScene() {
     renderer.render(scene, camera)
 
     controls.update()
+
+    // console.log("相机位置", camera.position)
 }
 
 //场景自适应
