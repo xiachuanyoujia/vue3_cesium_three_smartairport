@@ -17,6 +17,12 @@ let controls = null
 let gltfLoader = null
 let dracoLoader = null
 
+let airportGltf = null
+let mixerScene = null
+
+let clock = new THREE.Clock()
+let previousTime = null
+
 const dom = ref()
 
 onMounted(() => {
@@ -37,16 +43,16 @@ const init = () => {
     scene = new THREE.Scene()
     renderer = new THREE.WebGL1Renderer({
         antialias: true,
-        alpha: true,
+        // alpha: true,
         logarithmicDepthBuffer: true,
     })
     renderer.outputEncoding = THREE.sRGBEncoding
     renderer.setSize(dom.value.offsetWidth, dom.value.offsetHeight)
 
     camera = new THREE.PerspectiveCamera(45, dom.value.offsetWidth / dom.value.offsetHeight, 0.1, 1000)
-    
+
     //设置相机初始位置
-    camera.position.set(-70.87587075520202, 11.950535661109116, 4.246782867351376) 
+    camera.position.set(3.03079142090544, 1.9848119701735485, 3.0720229175612066)
 
     dom.value.appendChild(renderer.domElement)
 
@@ -83,6 +89,7 @@ const addAirort = () => {
                 }
             })
             resolve(gltf.scene);
+            // console.log("热气球缆车", gltf.animations)
         })
     })
 
@@ -96,6 +103,11 @@ const addAirort = () => {
                 }
             })
             resolve(gltf.scene);
+
+            console.log("四翼桨机", gltf.animations)
+            // airportGltf = gltf
+            // mixerScene = new THREE.AnimationMixer(airportGltf.scene)
+
         })
     });
 
@@ -109,6 +121,8 @@ const addAirort = () => {
                 }
             })
             resolve(gltf.scene);
+            console.log("汽车", gltf.animations)
+
         })
     });
 
@@ -122,6 +136,8 @@ const addAirort = () => {
                 }
             })
             resolve(gltf.scene);
+            console.log("飞机", gltf.animations)
+
         })
     });
 
@@ -135,6 +151,12 @@ const addAirort = () => {
                 }
             })
             resolve(gltf.scene);
+            console.log("人物", gltf.animations)
+
+            airportGltf = gltf
+            mixerScene = new THREE.AnimationMixer(airportGltf.scene)
+            // console.log("人物动画", mixerScene)
+
         })
     });
 
@@ -148,6 +170,8 @@ const addAirort = () => {
                 }
             })
             resolve(gltf.scene);
+            console.log("装甲车", gltf.animations)
+
         })
     });
 
@@ -161,21 +185,45 @@ const addAirort = () => {
                 }
             })
             resolve(gltf.scene);
+            // console.log("哨塔", gltf.animations)
+
         })
     });
 
-    Promise.all([balloonCableCar, fourWingsPropeller,car,aircraft,figure,armoredCar,tower]).then((resolve) => {
-        scene.add(resolve[0])
-        scene.add(resolve[1])
-        scene.add(resolve[2])
-        scene.add(resolve[3])
+    Promise.all([balloonCableCar, fourWingsPropeller, car, aircraft, figure, armoredCar, tower]).then((resolve) => {
+        // scene.add(resolve[0])
+        // scene.add(resolve[1])
+        // scene.add(resolve[2])
+        // scene.add(resolve[3])
         scene.add(resolve[4])
-        scene.add(resolve[5])
-        scene.add(resolve[6])
+        // scene.add(resolve[5])
+        // scene.add(resolve[6])
+
+        playSceneAnimation()
+
     }).catch(err => {
         console.log("添加模型抛错err", err)
     })
+}
 
+//播放场景动画
+const playSceneAnimation = () => {
+    const nLen = airportGltf.animations.length
+    // console.log(nLen)
+    for (let n = 0; n < nLen; ++n) {
+        const action = mixerScene.clipAction(airportGltf.animations[n])
+        action.paused = false
+        action.play()
+    }
+}
+//暂停场景动画
+const stopSceneAnimation = () => {
+    const nLen = airportGltf.animations.length
+    // console.log(nLen)
+    for (let n = 0; n < nLen; ++n) {
+        const action = mixerScene.clipAction(airportGltf.animations[n])
+        action.paused = true
+    }
 }
 
 //添加环境光
@@ -190,10 +238,18 @@ const addLights = () => {
 
 //绘制场景
 function renderScene() {
+    const elapsedTime = clock.getElapsedTime()
+    const deltaTime = elapsedTime - previousTime
+    previousTime = elapsedTime
+
     requestAnimationFrame(renderScene.bind(renderScene))
     renderer.render(scene, camera)
 
     controls.update()
+
+    if (mixerScene) {
+        mixerScene.update(deltaTime)
+    }
 
     // console.log("相机位置", camera.position)
 }
