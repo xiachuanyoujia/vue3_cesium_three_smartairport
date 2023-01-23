@@ -17,7 +17,7 @@ let controls = null
 let gltfLoader = null
 let dracoLoader = null
 
-let airportGltf = null
+let figureGltf = null
 let mixerScene = null
 
 let clock = new THREE.Clock()
@@ -51,8 +51,9 @@ const init = () => {
 
     camera = new THREE.PerspectiveCamera(45, dom.value.offsetWidth / dom.value.offsetHeight, 0.1, 1000)
 
-    //设置相机初始位置
-    camera.position.set(3.03079142090544, 1.9848119701735485, 3.0720229175612066)
+    //设置相机初始位置 
+    // camera.position.set(3.03079142090544, 1.9848119701735485, 3.0720229175612066)
+    camera.position.set(217.3103621558218, 126.41836032961118, 168.67448573029623)
 
     dom.value.appendChild(renderer.domElement)
 
@@ -90,6 +91,7 @@ const addAirort = () => {
             })
             resolve(gltf.scene);
             // console.log("热气球缆车", gltf.animations)
+            gltf.scene.translateY(55)
         })
     })
 
@@ -105,8 +107,10 @@ const addAirort = () => {
             resolve(gltf.scene);
 
             console.log("四翼桨机", gltf.animations)
-            // airportGltf = gltf
-            // mixerScene = new THREE.AnimationMixer(airportGltf.scene)
+
+            gltf.scene.translateX(30)
+            gltf.scene.translateY(30)
+            gltf.scene.translateZ(30)
 
         })
     });
@@ -123,6 +127,9 @@ const addAirort = () => {
             resolve(gltf.scene);
             console.log("汽车", gltf.animations)
 
+            gltf.scene.translateZ(40)
+
+
         })
     });
 
@@ -138,6 +145,11 @@ const addAirort = () => {
             resolve(gltf.scene);
             console.log("飞机", gltf.animations)
 
+            gltf.scene.translateX(0)
+            gltf.scene.translateY(70)
+            gltf.scene.translateZ(100)
+
+
         })
     });
 
@@ -145,18 +157,21 @@ const addAirort = () => {
     let figure = new Promise((resolve) => {
         gltfLoader.load('/models/Cesium_Man.glb', gltf => {
             gltf.scene.traverse(child => {
+
+                // console.log("模型child", child)
+
+
                 if (child.isMesh) {
                     child.material.alphaTest = 1
                     child.material.side = THREE.DoubleSide;
                 }
             })
             resolve(gltf.scene);
-            console.log("人物", gltf.animations)
 
-            airportGltf = gltf
-            mixerScene = new THREE.AnimationMixer(airportGltf.scene)
-            // console.log("人物动画", mixerScene)
+            figureGltf = gltf
+            mixerScene = new THREE.AnimationMixer(figureGltf.scene)
 
+            gltf.scene.translateZ(20)
         })
     });
 
@@ -172,6 +187,8 @@ const addAirort = () => {
             resolve(gltf.scene);
             console.log("装甲车", gltf.animations)
 
+            gltf.scene.translateZ(60)
+
         })
     });
 
@@ -186,18 +203,19 @@ const addAirort = () => {
             })
             resolve(gltf.scene);
             // console.log("哨塔", gltf.animations)
+            gltf.scene.translateX(140)
 
         })
     });
 
     Promise.all([balloonCableCar, fourWingsPropeller, car, aircraft, figure, armoredCar, tower]).then((resolve) => {
-        // scene.add(resolve[0])
-        // scene.add(resolve[1])
-        // scene.add(resolve[2])
-        // scene.add(resolve[3])
+        scene.add(resolve[0])
+        scene.add(resolve[1])
+        scene.add(resolve[2])
+        scene.add(resolve[3])
         scene.add(resolve[4])
-        // scene.add(resolve[5])
-        // scene.add(resolve[6])
+        scene.add(resolve[5])
+        scene.add(resolve[6])
 
         playSceneAnimation()
 
@@ -208,20 +226,20 @@ const addAirort = () => {
 
 //播放场景动画
 const playSceneAnimation = () => {
-    const nLen = airportGltf.animations.length
+    const nLen = figureGltf.animations.length
     // console.log(nLen)
     for (let n = 0; n < nLen; ++n) {
-        const action = mixerScene.clipAction(airportGltf.animations[n])
+        const action = mixerScene.clipAction(figureGltf.animations[n])
         action.paused = false
         action.play()
     }
 }
 //暂停场景动画
 const stopSceneAnimation = () => {
-    const nLen = airportGltf.animations.length
+    const nLen = figureGltf.animations.length
     // console.log(nLen)
     for (let n = 0; n < nLen; ++n) {
-        const action = mixerScene.clipAction(airportGltf.animations[n])
+        const action = mixerScene.clipAction(figureGltf.animations[n])
         action.paused = true
     }
 }
