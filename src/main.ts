@@ -3,4 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import Echarts from "vue-echarts";
 
-createApp(App).use(router).component("v-chart", Echarts).mount("#app");
+import 'cesium/widgets.css'
+import * as Cesium from 'cesium'
+
+createApp(App).use(router).provide("$Cesium", Cesium).component("v-chart", Echarts).mount("#app");
