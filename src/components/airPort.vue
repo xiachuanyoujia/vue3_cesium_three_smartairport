@@ -1,5 +1,5 @@
 <template>
-    <div style="height:100vh;" id="container"></div>
+    <div style="width: 100%;;height:100vh;" id="container"></div>
 </template>
 <script lang="ts" setup>
 import { ref, reactive, onMounted, render } from 'vue'
@@ -108,6 +108,9 @@ const addAirort = () => {
 
             console.log("四翼桨机", gltf.animations)
 
+            figureGltf = gltf
+            mixerScene = new THREE.AnimationMixer(figureGltf.scene)
+
             gltf.scene.translateX(30)
             gltf.scene.translateY(30)
             gltf.scene.translateZ(30)
@@ -145,6 +148,9 @@ const addAirort = () => {
             resolve(gltf.scene);
             console.log("飞机", gltf.animations)
 
+            figureGltf = gltf
+            mixerScene = new THREE.AnimationMixer(figureGltf.scene) 
+
             gltf.scene.translateX(0)
             gltf.scene.translateY(70)
             gltf.scene.translateZ(100)
@@ -157,10 +163,6 @@ const addAirort = () => {
     let figure = new Promise((resolve) => {
         gltfLoader.load('/models/Cesium_Man.glb', gltf => {
             gltf.scene.traverse(child => {
-
-                // console.log("模型child", child)
-
-
                 if (child.isMesh) {
                     child.material.alphaTest = 1
                     child.material.side = THREE.DoubleSide;
@@ -168,8 +170,8 @@ const addAirort = () => {
             })
             resolve(gltf.scene);
 
-            figureGltf = gltf
-            mixerScene = new THREE.AnimationMixer(figureGltf.scene)
+            // figureGltf = gltf
+            // mixerScene = new THREE.AnimationMixer(figureGltf.scene)
 
             gltf.scene.translateZ(20)
         })
@@ -203,7 +205,7 @@ const addAirort = () => {
             })
             resolve(gltf.scene);
             // console.log("哨塔", gltf.animations)
-            gltf.scene.translateX(140)
+            gltf.scene.translateX(50)
 
         })
     });
