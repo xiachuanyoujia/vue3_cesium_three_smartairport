@@ -83,7 +83,7 @@ const init = () => {
     destination: Cesium.Cartesian3.fromDegrees(
       116.588627,
       40.078398,
-      40000000.0
+      25000000.0
     ),
     orientation: {
       heading: Cesium.Math.toRadians(0, 0),
@@ -104,9 +104,6 @@ const init = () => {
     //这里通过封装绘制曲线
     curvePlotting([...geoCoordMapArr[i], ...geoCoordMapArr[newi]], viewer)
   }
-
-
-
 
   console.log("viewer", viewer)
 
