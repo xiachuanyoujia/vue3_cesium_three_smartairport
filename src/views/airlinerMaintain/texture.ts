@@ -207,9 +207,9 @@ function getFlylineMaterial() {
 }
 
 //抛物线绘制
-function parabola(twoPoints:any) {
+function parabola(twoPoints: any) {
   //抛物线绘制
-  let s:any = [];
+  let s: any = [];
   let startPoint = [twoPoints[0], twoPoints[1], 0]; //起点的经度、纬度
   s = s.concat(startPoint);
   let step = 80; //线的多少，越多则越平滑(但过多浏览器缓存也会占用越多)
@@ -219,10 +219,17 @@ function parabola(twoPoints:any) {
   let deltaLon = dLon * Math.abs(111000 * Math.cos(twoPoints[1])); //经度差(米级)
   let deltaLat = dLat * 111000; //纬度差(米),1纬度相差约111000米
   let endPoint = [0, 0, 0]; //定义一个端点（后面将进行startPoint和endPoint两点画线）
-  let heigh = Number((step * Math.sqrt(deltaLon * deltaLon + deltaLat * deltaLat) * heightProportion).toFixed(0)) * 2;
+  let heigh =
+    Number(
+      (
+        step *
+        Math.sqrt(deltaLon * deltaLon + deltaLat * deltaLat) *
+        heightProportion
+      ).toFixed(0)
+    ) * 2;
   let x2 = 10000 * Math.sqrt(dLon * dLon + dLat * dLat); //小数点扩大10000倍，提高精确度
   let a = heigh / (x2 * x2);
-  function y(x:any, height:any) {
+  function y(x: any, height: any) {
     return height - a * x * x;
   }
   for (var i = 1; i <= step; i++) {
@@ -241,4 +248,29 @@ function parabola(twoPoints:any) {
   return Cesium.Cartesian3.fromDegreesArrayHeights(s);
 }
 
-export { getFlylineMaterial, parabola };
+//封装抛物线并添加至场景中
+function curvePlotting(longitudeAndLatitude: any, viewer: any) {
+//   console.log("texture里的viewer", viewer);
+  //这里通过算法得到曲线
+  let mm = parabola(longitudeAndLatitude);
+  let polyline = new Cesium.PolylineGeometry({
+    positions: mm,
+    width: 2,
+  });
+
+  const instance = new Cesium.GeometryInstance({
+    geometry: polyline,
+    id: "flyline",
+  });
+
+  //添加至场景
+  viewer.scene.primitives.add(
+    new Cesium.Primitive({
+      geometryInstances: [instance],
+      appearance: getFlylineMaterial(),
+      releaseGeometryInstances: false,
+      compressVertices: false,
+    })
+  );
+}
+export { getFlylineMaterial, parabola, curvePlotting };
