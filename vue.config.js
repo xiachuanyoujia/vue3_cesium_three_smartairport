@@ -44,6 +44,14 @@ module.exports = {
       new webpack.DefinePlugin({
         CESIUM_BASE_URL: JSON.stringify("./"),
       }),
+      //配置 webpack打包忽略 readmePic文件夹
+      new CopyWebpackPlugin([
+        {
+          from: path.resolve(__dirname, "./readmePic"),
+          to: "readmePic",
+          ignore: [".*"],
+        },
+      ]),
     ],
     module: {
       unknownContextCritical: false,
