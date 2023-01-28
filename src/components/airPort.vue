@@ -63,7 +63,9 @@ const init = () => {
     gltfLoader.setDRACOLoader(dracoLoader);
 
     controls = new OrbitControls(camera, renderer.domElement)
-    controls.maxPolarAngle = 0.4 * Math.PI;
+    
+    // 禁止场景向下拖拽
+    // controls.maxPolarAngle = 0.4 * Math.PI;
 
 }
 
