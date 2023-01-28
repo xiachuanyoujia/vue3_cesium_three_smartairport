@@ -8,6 +8,28 @@ import { getFlylineMaterial, parabola, curvePlotting } from "./texture"
 
 let Cesium = inject("$Cesium")
 
+let geoCoordMap = {
+  //地理坐标
+  北京: [116.4551, 40.2539],
+  巴西利亚: [-47.917233, -15.869736],
+  温哥华: [-123.181512, 49.196692],
+  莫斯科: [37.623638, 55.752055],
+  伦敦: [0.049518, 51.504841],
+  华盛顿: [-77.456536, 38.953115],
+  圣地亚哥: [-117.193305, 32.733801],
+  内罗华: [-43.249422, -22.813409],
+  开普敦: [18.602085, -33.971463],
+  曼谷: [100.750101, 13.689969],
+  重庆: [106.644156, 29.72263],
+  香港: [113.945136, 22.317638],
+  上海: [121.813481, 31.156682],
+  斯里巴加湾市: [23.973313, 56.922652],
+  首尔: [126.801518, 37.557968],
+  悉尼: [151.187692, -33.92881],
+  东京: [140.39285, 35.771986],
+  鄂霍次克: [143.246185, 59.362988],
+}
+
 onMounted(() => {
   init()
 })
@@ -71,35 +93,47 @@ const init = () => {
   });
 
   //添加点位
-  // var entity = viewer.entities.add({
-  //   position: Cesium.Cartesian3.fromDegrees(120.9677706, 30.7985748, 2.61),
-  //   point: {
-  //     color: Cesium.Color.RED,    //点位颜色
-  //     pixelSize: 10                //像素点大小
-  //   },
-  //   label: {
-  //     text: '测试名称',
-  //     font: '14pt Source Han Sans CN',    //字体样式
-  //     fillColor: Cesium.Color.BLACK,        //字体颜色
-  //     backgroundColor: Cesium.Color.AQUA,    //背景颜色
-  //     showBackground: true,                //是否显示背景颜色
-  //     style: Cesium.LabelStyle.FILL,        //label样式
-  //     outlineWidth: 2,
-  //     verticalOrigin: Cesium.VerticalOrigin.CENTER,//垂直位置
-  //     horizontalOrigin: Cesium.HorizontalOrigin.LEFT,//水平位置
-  //     pixelOffset: new Cesium.Cartesian2(10, 0)            //偏移
-  //   }
-  // });
-  // console.log(entity);
+  let geoCoordMapArr = []
+  for (const key in geoCoordMap) {
+    addPointPosition(geoCoordMap[key], viewer, key)
+    geoCoordMapArr.push(geoCoordMap[key])
+  }
 
-  //这里通过封装绘制曲线
-  curvePlotting([-75, 39, -175, 39], viewer)
+  for (let i = 0, newi = 1; i < geoCoordMapArr.length; i++, newi++) {
+    if (i % 2 == 1) continue
+    //这里通过封装绘制曲线
+    curvePlotting([...geoCoordMapArr[i], ...geoCoordMapArr[newi]], viewer)
+  }
+
+
+
 
   console.log("viewer", viewer)
 
 }
 
-
+//添加点位
+const addPointPosition = (longitudeAndLatitude, viewer, name) => {
+  viewer.entities.add({
+    position: Cesium.Cartesian3.fromDegrees(...longitudeAndLatitude),
+    point: {
+      color: Cesium.Color.RED,    //点位颜色
+      pixelSize: 6                //像素点大小
+    },
+    label: {
+      text: name,
+      font: '10pt Source Han Sans CN',    //字体样式
+      fillColor: Cesium.Color.BLUE,        //字体颜色
+      // backgroundColor: Cesium.Color.AQUA,    //背景颜色
+      showBackground: false,                //是否显示背景颜色
+      style: Cesium.LabelStyle.FILL,        //label样式
+      outlineWidth: 2,
+      verticalOrigin: Cesium.VerticalOrigin.CENTER,//垂直位置
+      horizontalOrigin: Cesium.HorizontalOrigin.LEFT,//水平位置
+      pixelOffset: new Cesium.Cartesian2(10, 0)            //偏移
+    }
+  });
+}
 
 </script>
 
