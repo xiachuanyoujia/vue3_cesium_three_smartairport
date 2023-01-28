@@ -206,4 +206,39 @@ function getFlylineMaterial() {
   return aper;
 }
 
-export { getFlylineMaterial };
+//抛物线绘制
+function parabola(twoPoints:any) {
+  //抛物线绘制
+  let s:any = [];
+  let startPoint = [twoPoints[0], twoPoints[1], 0]; //起点的经度、纬度
+  s = s.concat(startPoint);
+  let step = 80; //线的多少，越多则越平滑(但过多浏览器缓存也会占用越多)
+  let heightProportion = 0.125; //最高点和总距离的比值
+  let dLon = (twoPoints[2] - startPoint[0]) / step; //经度差值
+  let dLat = (twoPoints[3] - startPoint[1]) / step; //纬度差值
+  let deltaLon = dLon * Math.abs(111000 * Math.cos(twoPoints[1])); //经度差(米级)
+  let deltaLat = dLat * 111000; //纬度差(米),1纬度相差约111000米
+  let endPoint = [0, 0, 0]; //定义一个端点（后面将进行startPoint和endPoint两点画线）
+  let heigh = Number((step * Math.sqrt(deltaLon * deltaLon + deltaLat * deltaLat) * heightProportion).toFixed(0)) * 2;
+  let x2 = 10000 * Math.sqrt(dLon * dLon + dLat * dLat); //小数点扩大10000倍，提高精确度
+  let a = heigh / (x2 * x2);
+  function y(x:any, height:any) {
+    return height - a * x * x;
+  }
+  for (var i = 1; i <= step; i++) {
+    //逐“帧”画线
+    endPoint[0] = startPoint[0] + dLon; //更新end点经度
+    endPoint[1] = startPoint[1] + dLat; //更新end点纬度
+    let x = x2 * ((2 * i) / step - 1); //求抛物线函数x
+    endPoint[2] = Number(y(x, heigh).toFixed(0)) * 1; //求end点高度
+    s = s.concat(endPoint);
+
+    // end点变为start点
+    startPoint[0] = endPoint[0];
+    startPoint[1] = endPoint[1];
+    startPoint[2] = endPoint[2];
+  }
+  return Cesium.Cartesian3.fromDegreesArrayHeights(s);
+}
+
+export { getFlylineMaterial, parabola };
