@@ -43,9 +43,16 @@ const init = () => {
     scene = new THREE.Scene()
     renderer = new THREE.WebGL1Renderer({
         antialias: true,
-        // alpha: true,
+        // alpha: true,    // 画布是否包含alpha（透明度）缓冲区。默认值为false。
         logarithmicDepthBuffer: true,
+
     })
+
+    let ambientLight = new THREE.AmbientLight(0x0c0c0c) // 创建环境光
+    scene.add(ambientLight) // 将环境光添加到场景
+    ambientLight.color = new THREE.Color(0x26E250) // 给环境光修改颜色
+    ambientLight.visible = true //显示环境光
+    
     renderer.outputEncoding = THREE.sRGBEncoding
     renderer.setSize(dom.value.offsetWidth, dom.value.offsetHeight)
 
@@ -63,7 +70,7 @@ const init = () => {
     gltfLoader.setDRACOLoader(dracoLoader);
 
     controls = new OrbitControls(camera, renderer.domElement)
-    
+
     // 禁止场景向下拖拽
     // controls.maxPolarAngle = 0.4 * Math.PI;
 
@@ -151,7 +158,7 @@ const addAirort = () => {
             console.log("飞机", gltf.animations)
 
             figureGltf = gltf
-            mixerScene = new THREE.AnimationMixer(figureGltf.scene) 
+            mixerScene = new THREE.AnimationMixer(figureGltf.scene)
 
             gltf.scene.translateX(0)
             gltf.scene.translateY(70)
@@ -212,7 +219,71 @@ const addAirort = () => {
         })
     });
 
-    Promise.all([balloonCableCar, fourWingsPropeller, car, aircraft, figure, armoredCar, tower]).then((resolve) => {
+    //ar-h470枪
+    let spear = new Promise((resolve) => {
+        gltfLoader.load('/models/ar-h470.glb', gltf => {
+            gltf.scene.traverse(child => {
+                if (child.isMesh) {
+                    child.material.alphaTest = 1
+                    child.material.side = THREE.DoubleSide;
+                }
+            })
+            resolve(gltf.scene);
+            // console.log("spear", gltf.animations)
+            // gltf.scene.translateX(50)
+
+        })
+    });
+
+    //原子之心机器人
+    let atomic = new Promise((resolve) => {
+        gltfLoader.load('/models/atomic.glb', gltf => {
+            gltf.scene.traverse(child => {
+                if (child.isMesh) {
+                    child.material.alphaTest = 1
+                    child.material.side = THREE.DoubleSide;
+                }
+            })
+            resolve(gltf.scene);
+            console.log("atomic", gltf.animations)
+            // gltf.scene.translateX(50)
+
+        })
+    });
+
+    //剑齿虎
+    let saber = new Promise((resolve) => {
+        gltfLoader.load('/models/saber.glb', gltf => {
+            gltf.scene.traverse(child => {
+                if (child.isMesh) {
+                    child.material.alphaTest = 1
+                    child.material.side = THREE.DoubleSide;
+                }
+            })
+            resolve(gltf.scene);
+            console.log("atomic", gltf.animations)
+            // gltf.scene.translateX(50)
+
+        })
+    });
+
+    //偷皮者
+    let skin = new Promise((resolve) => {
+        gltfLoader.load('/models/skin.glb', gltf => {
+            gltf.scene.traverse(child => {
+                if (child.isMesh) {
+                    child.material.alphaTest = 1
+                    child.material.side = THREE.DoubleSide;
+                }
+            })
+            resolve(gltf.scene);
+            console.log("atomic", gltf.animations)
+            // gltf.scene.translateX(50)
+
+        })
+    });
+
+    Promise.all([balloonCableCar, fourWingsPropeller, car, aircraft, figure, armoredCar, tower, spear, atomic, saber, skin]).then((resolve) => {
         scene.add(resolve[0])
         scene.add(resolve[1])
         scene.add(resolve[2])
@@ -220,6 +291,10 @@ const addAirort = () => {
         scene.add(resolve[4])
         scene.add(resolve[5])
         scene.add(resolve[6])
+        scene.add(resolve[7])
+        scene.add(resolve[8])
+        scene.add(resolve[9])
+        scene.add(resolve[10])
 
         playSceneAnimation()
 
@@ -291,8 +366,6 @@ const addAxesHelper = () => {
 }
 
 </script>
-<style>
-
-</style>
+<style></style>
 
 
