@@ -52,7 +52,7 @@ const init = () => {
     scene.add(ambientLight) // 将环境光添加到场景
     ambientLight.color = new THREE.Color(0x26E250) // 给环境光修改颜色
     ambientLight.visible = true //显示环境光
-    
+
     renderer.outputEncoding = THREE.sRGBEncoding
     renderer.setSize(dom.value.offsetWidth, dom.value.offsetHeight)
 

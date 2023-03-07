@@ -8,7 +8,7 @@ import { getFlylineMaterial, parabola, curvePlotting } from "./texture"
 
 let Cesium = inject("$Cesium")
 
-let geoCoordMap = {
+let geoCoordMap: any = {
   //地理坐标
   北京: [116.4551, 40.2539],
   巴西利亚: [-47.917233, -15.869736],
@@ -28,6 +28,9 @@ let geoCoordMap = {
   悉尼: [151.187692, -33.92881],
   东京: [140.39285, 35.771986],
   鄂霍次克: [143.246185, 59.362988],
+  桂平: [110.08, 23.40],
+  平冲: [1.9210476404425876,0.4085423988714871],
+  // { x: -2007486.8097853302, y: 5500336.477205921, z:, 2520734.709790104 }
 }
 
 onMounted(() => {
@@ -41,8 +44,8 @@ const init = () => {
     imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
       // arcgis访问地址
       // url: "http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer", 
-      url: "http://map.geoq.cn/arcgis/rest/services/ChinaOnlineCommunity/MapServer",
-      // url: "https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer",  
+      // url: "http://map.geoq.cn/arcgis/rest/services/ChinaOnlineCommunity/MapServer",
+      url: "https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer",
 
       orderIndependentTranslucency: false,
       homeButton: false,
@@ -93,24 +96,34 @@ const init = () => {
   });
 
   //添加点位
-  let geoCoordMapArr = []
+  let geoCoordMapArr: any = []
   for (const key in geoCoordMap) {
     addPointPosition(geoCoordMap[key], viewer, key)
     geoCoordMapArr.push(geoCoordMap[key])
   }
 
+
   for (let i = 0, newi = 1; i < geoCoordMapArr.length; i++, newi++) {
     if (i % 2 == 1) continue
+    if (newi == geoCoordMapArr.length) break
     //这里通过封装绘制曲线
     curvePlotting([...geoCoordMapArr[i], ...geoCoordMapArr[newi]], viewer)
   }
+
+  let handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas)
+  handler.setInputAction(function (event) {
+    let position = viewer.scene.camera.pickEllipsoid(event.position, viewer.scene.globe.ellipsoid);
+    let cartographic = Cesium.Cartographic.fromCartesian(position)
+    console.log(position);
+    console.log(cartographic);
+  }, Cesium.ScreenSpaceEventType.LEFT_CLICK)
 
   console.log("viewer", viewer)
 
 }
 
 //添加点位
-const addPointPosition = (longitudeAndLatitude, viewer, name) => {
+const addPointPosition = (longitudeAndLatitude: string, viewer, name) => {
   viewer.entities.add({
     position: Cesium.Cartesian3.fromDegrees(...longitudeAndLatitude),
     point: {
@@ -131,6 +144,7 @@ const addPointPosition = (longitudeAndLatitude, viewer, name) => {
     }
   });
 }
+
 
 </script>
 
