@@ -29,8 +29,7 @@ let geoCoordMap: any = {
   东京: [140.39285, 35.771986],
   鄂霍次克: [143.246185, 59.362988],
   桂平: [110.08, 23.40],
-  平冲: [1.9210476404425876,0.4085423988714871],
-  // { x: -2007486.8097853302, y: 5500336.477205921, z:, 2520734.709790104 }
+  平冲: [110.03165802457352,23.44022182547262],
 }
 
 onMounted(() => {
@@ -114,8 +113,11 @@ const init = () => {
   handler.setInputAction(function (event) {
     let position = viewer.scene.camera.pickEllipsoid(event.position, viewer.scene.globe.ellipsoid);
     let cartographic = Cesium.Cartographic.fromCartesian(position)
-    console.log(position);
-    console.log(cartographic);
+    // 4.地理坐标（弧度制）转为经纬度坐标
+    let lat = Cesium.Math.toDegrees(cartographic.latitude);
+    let lng = Cesium.Math.toDegrees(cartographic.longitude);
+    let height = cartographic.height;
+    console.log(lat, lng, height);
   }, Cesium.ScreenSpaceEventType.LEFT_CLICK)
 
   console.log("viewer", viewer)
