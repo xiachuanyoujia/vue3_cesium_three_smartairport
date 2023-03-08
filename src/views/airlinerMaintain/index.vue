@@ -28,8 +28,8 @@ let geoCoordMap: any = {
   悉尼: [151.187692, -33.92881],
   东京: [140.39285, 35.771986],
   鄂霍次克: [143.246185, 59.362988],
-  桂平: [110.08, 23.40],
-  平冲: [110.03165802457352,23.44022182547262],
+  // 桂平: [110.08, 23.40],
+  平冲: [110.03165802457352, 23.44022182547262],
 }
 
 onMounted(() => {
@@ -94,6 +94,18 @@ const init = () => {
     },
   });
 
+  // 设置默认的视角为中国
+  Cesium.Camera.DEFAULT_VIEW_RECTANGLE = Cesium.Rectangle.fromDegrees(
+    // 西边经度
+    89.5,
+    // 南边维度
+    20.4,
+    // 东边经度
+    110.4,
+    // 北边维度
+    61.2
+  )
+
   //添加点位
   let geoCoordMapArr: any = []
   for (const key in geoCoordMap) {
@@ -109,6 +121,7 @@ const init = () => {
     curvePlotting([...geoCoordMapArr[i], ...geoCoordMapArr[newi]], viewer)
   }
 
+  //获取当前点击的经纬度
   let handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas)
   handler.setInputAction(function (event) {
     let position = viewer.scene.camera.pickEllipsoid(event.position, viewer.scene.globe.ellipsoid);
@@ -117,7 +130,7 @@ const init = () => {
     let lat = Cesium.Math.toDegrees(cartographic.latitude);
     let lng = Cesium.Math.toDegrees(cartographic.longitude);
     let height = cartographic.height;
-    console.log(lat, lng, height);
+    console.log("当前经纬度坐标：", lat, lng, height);
   }, Cesium.ScreenSpaceEventType.LEFT_CLICK)
 
   console.log("viewer", viewer)
