@@ -151,7 +151,7 @@ const init = () => {
     },
   });
 
-  console.log(modelEntity)
+  // console.log(modelEntity)
   // 聚焦模型
   viewer.trackedEntity = modelEntity;
 
