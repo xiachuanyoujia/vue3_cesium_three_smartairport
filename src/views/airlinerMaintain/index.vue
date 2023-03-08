@@ -29,7 +29,7 @@ let geoCoordMap: any = {
   东京: [140.39285, 35.771986],
   鄂霍次克: [143.246185, 59.362988],
   // 桂平: [110.08, 23.40],
-  平冲: [110.03165802457352, 23.44022182547262],
+  桂平: [110.04061649606402, 23.44348302026688],
 }
 
 onMounted(() => {
@@ -39,6 +39,7 @@ onMounted(() => {
 const init = () => {
   let viewer = new Cesium.Viewer("containerEarth", {
     infoBox: false,
+    shouldAnimate:true, //配置为自动播放动画
     baseLayerPicker: false,
     imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
       // arcgis访问地址
@@ -77,15 +78,17 @@ const init = () => {
   viewer._cesiumWidget._creditContainer.style.display = "none";
   viewer.animation.container.style.display = "none";
   viewer.timeline.container.style.display = "none";
-  viewer.scene.globe.depthTestAgainstTerrain = false;
+  viewer.scene.globe.depthTestAgainstTerrain = false;//地形遮挡效果开关，打开后地形会遮挡看不到的区域
   viewer.scene.globe.showGroundAtmosphere = false;
+  viewer.scene.globe.enableLighting = true; //对大气和雾启用动态照明效果
 
   //配置地球相机初始位置
   viewer.camera.setView({
     destination: Cesium.Cartesian3.fromDegrees(
-      116.588627,
-      40.078398,
-      25000000.0
+      // 116.588627,
+      // 40.078398,
+      // 25000000.0
+      110.04061649606402, 23.44348302026688, 600
     ),
     orientation: {
       heading: Cesium.Math.toRadians(0, 0),
@@ -94,7 +97,7 @@ const init = () => {
     },
   });
 
-  // 设置默认的视角为中国
+  //设置默认的视角为中国
   Cesium.Camera.DEFAULT_VIEW_RECTANGLE = Cesium.Rectangle.fromDegrees(
     // 西边经度
     89.5,
@@ -132,6 +135,25 @@ const init = () => {
     let height = cartographic.height;
     console.log("当前经纬度坐标：", lat, lng, height);
   }, Cesium.ScreenSpaceEventType.LEFT_CLICK)
+
+  // 记载glb模型
+  const modelEntity = viewer.entities.add({
+    name: "人物glb模型",
+    position: new Cesium.Cartesian3.fromDegrees(110.04061649606402, 23.44348302026688),
+    model: {
+      uri: '/models/Cesium_Man.glb',
+      scale : 50.0,
+      // minimumPixelSize: 256,
+      // maxumunScale: 500,
+      incrementallyLoadTextures: true, // 加载模型后纹理是否可以继续流入
+      runAnimations: true, // 是否应启动模型中指定的glTF动画
+      heightReference: Cesium.HeightReference.CLAMP_TO_GROUND //设置模型贴地,
+    },
+  });
+
+  console.log(modelEntity)
+  // 聚焦模型
+  viewer.trackedEntity = modelEntity;
 
   console.log("viewer", viewer)
 
