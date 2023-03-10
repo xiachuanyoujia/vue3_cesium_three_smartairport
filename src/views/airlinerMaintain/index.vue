@@ -88,7 +88,7 @@ const init = () => {
       // 116.588627,
       // 40.078398,
       // 25000000.0
-      110.04061649606402, 23.44348302026688, 600
+      114.2321730316198, 22.300849401205425, 1600
     ),
     orientation: {
       heading: Cesium.Math.toRadians(0, 0),
@@ -138,41 +138,49 @@ const init = () => {
 
   // 加载glb模型
   // 模型移动
-  let startPosition = new Cesium.Cartesian3.fromDegrees(110.04061649606402, 23.44348302026688);
-  let endPosition = new Cesium.Cartesian3.fromDegrees(110.04711609957151, 23.43851227376917);
-  let factor = 0;
-  let position = new Cesium.CallbackProperty(function () {
-    if (factor > 5000) {
-      factor = 0;
-    }
-    factor++;
-    // 动态更新位置
-    return Cesium.Cartesian3.lerp(startPosition, endPosition, factor / 5000.0, new Cesium.Cartesian3());
-  }, false)
+  // let startPosition = new Cesium.Cartesian3.fromDegrees(110.04061649606402, 23.44348302026688);
+  // let endPosition = new Cesium.Cartesian3.fromDegrees(110.04711609957151, 23.43851227376917);
+  // let factor = 0;
+  // let position = new Cesium.CallbackProperty(function () {
+  //   if (factor > 5000) {
+  //     factor = 0;
+  //   }
+  //   factor++;
+  //   // 动态更新位置
+  //   return Cesium.Cartesian3.lerp(startPosition, endPosition, factor / 5000.0, new Cesium.Cartesian3());
+  // }, false)
 
-  //模型视角
-  let heading = Cesium.Math.toRadians(45.0);
-  let pitch = Cesium.Math.toRadians(15.0);
-  let roll = Cesium.Math.toRadians(0.0);
-  let orientation = Cesium.Transforms.headingPitchRollQuaternion(startPosition, new Cesium.HeadingPitchRoll(heading, pitch, roll));
+  // //模型视角
+  // let heading = Cesium.Math.toRadians(45.0);
+  // let pitch = Cesium.Math.toRadians(15.0);
+  // let roll = Cesium.Math.toRadians(0.0);
+  // let orientation = Cesium.Transforms.headingPitchRollQuaternion(startPosition, new Cesium.HeadingPitchRoll(heading, pitch, roll));
 
-  const modelEntity = viewer.entities.add({
-    name: "人物glb模型",
-    orientation: orientation,
-    position: position,
-    model: {
-      uri: '/models/Cesium_Man.glb',
-      scale: 50.0,
-      // minimumPixelSize: 256,
-      // maxumunScale: 500,
-      incrementallyLoadTextures: true, // 加载模型后纹理是否可以继续流入
-      runAnimations: true, // 是否应启动模型中指定的glTF动画
-      // heightReference: Cesium.HeightReference.CLAMP_TO_GROUND //设置模型贴地,
-    },
-  });
+  // const modelEntity = viewer.entities.add({
+  //   name: "人物glb模型",
+  //   orientation: orientation,
+  //   position: position,
+  //   model: {
+  //     uri: '/models/Cesium_Man.glb',
+  //     scale: 50.0,
+  //     // minimumPixelSize: 256,
+  //     // maxumunScale: 500,
+  //     incrementallyLoadTextures: true, // 加载模型后纹理是否可以继续流入
+  //     runAnimations: true, // 是否应启动模型中指定的glTF动画
+  //     // heightReference: Cesium.HeightReference.CLAMP_TO_GROUND //设置模型贴地,
+  //   },
+  // });
 
   // 聚焦模型
-  viewer.trackedEntity = modelEntity;
+  // viewer.trackedEntity = modelEntity;
+
+  // 添加3D Tiles
+  let tilesetModel = new Cesium.Cesium3DTileset({
+    url: "/public/3dtiles/Tile_+032_+003/tileset.json"
+  });
+  console.log(tilesetModel)
+
+  viewer.scene.primitives.add(tilesetModel);
 
   console.log("viewer", viewer)
 
