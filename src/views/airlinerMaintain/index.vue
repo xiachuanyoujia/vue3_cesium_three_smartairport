@@ -5,12 +5,7 @@
 <script lang="ts" setup>
 import { onMounted, inject } from "vue";
 import { getFlylineMaterial, parabola, curvePlotting } from "./texture"
-import tileset_032003 from "/public/3dtiles/Tile_+032_+003/tileset.json";
-import tileset_032004 from "/public/3dtiles/Tile_+032_+004/tileset.json";
-import tileset_033003 from "/public/3dtiles/Tile_+033_+003/tileset.json";
-import tileset_033004 from "/public/3dtiles/Tile_+033_+004/tileset.json";
-import tileset_034003 from "/public/3dtiles/Tile_+034_+003/tileset.json";
-import tileset_034004 from "/public/3dtiles/Tile_+034_+004/tileset.json";
+import { FN_3dtiles } from "./fixGltf";
 
 let Cesium = inject("$Cesium")
 
@@ -183,27 +178,31 @@ const init = () => {
   */
 
   // 添加3D Tiles
+  FN_3dtiles(Cesium)
   // viewer.scene.globe.depthTestAgainstTerrain = true
   let tilesetModel = new Cesium.Cesium3DTileset({
-    // url: tileset_032003,
-    // url: tileset_032004,
-    // url: tileset_033003,
-    // url: tileset_033004,
-    // url: tileset_034003,
-    // url: tileset_034004,
-    // url: '/public/3dtiles/Tile_+032_+003/tileset.json',
-    url: '../../../public/3dtiles/Tile_+032_+003/tileset.json',
-  });
+    url: '/3dtiles/Tile_+032_+003/tileset.json',
+    // modelMatrix: new Cesium.Matrix4.fromArray([
+    //   1.0, 0.0, 0.0, 0.0,
+    //   0.0, 1.0, 0.0, 0.0,
+    //   0.0, 0.0, 1.0, 0.0,
+    //   114.2321730316198, 22.300849401205425, 1600, 1.0
+    // ]), //转移矩阵
+  })
   viewer.scene.primitives.add(tilesetModel);
-  console.log(tilesetModel)
+
+  let boundingSphere = null;
   tilesetModel.readyPromise
     .then(function (currentModel) {
       console.log('111')
-      console.log(currentModel)
+      boundingSphere = tilesetModel.boundingSphere;
+      viewer.camera.viewBoundingSphere(boundingSphere, new Cesium.HeadingPitchRange(0, -2.0, 0));
+      viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
     })
     .otherwise(function (error) {
       new Error(error);
     })
+
 
   // 聚焦模型
   // viewer.trackedEntity = tilesetModel;
