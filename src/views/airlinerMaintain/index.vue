@@ -191,7 +191,8 @@ const init = () => {
     // url: tileset_033004,
     // url: tileset_034003,
     // url: tileset_034004,
-    url: '/public/3dtiles/Tile_+032_+003/tileset.json',
+    // url: '/public/3dtiles/Tile_+032_+003/tileset.json',
+    url: '../../../public/3dtiles/Tile_+032_+003/tileset.json',
   });
   viewer.scene.primitives.add(tilesetModel);
   console.log(tilesetModel)
