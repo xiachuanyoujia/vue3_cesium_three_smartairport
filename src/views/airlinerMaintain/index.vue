@@ -5,6 +5,12 @@
 <script lang="ts" setup>
 import { onMounted, inject } from "vue";
 import { getFlylineMaterial, parabola, curvePlotting } from "./texture"
+import tileset_032003 from "/public/3dtiles/Tile_+032_+003/tileset.json";
+import tileset_032004 from "/public/3dtiles/Tile_+032_+004/tileset.json";
+import tileset_033003 from "/public/3dtiles/Tile_+033_+003/tileset.json";
+import tileset_033004 from "/public/3dtiles/Tile_+033_+004/tileset.json";
+import tileset_034003 from "/public/3dtiles/Tile_+034_+003/tileset.json";
+import tileset_034004 from "/public/3dtiles/Tile_+034_+004/tileset.json";
 
 let Cesium = inject("$Cesium")
 
@@ -78,7 +84,7 @@ const init = () => {
   viewer._cesiumWidget._creditContainer.style.display = "none";
   viewer.animation.container.style.display = "none";
   viewer.timeline.container.style.display = "none";
-  viewer.scene.globe.depthTestAgainstTerrain = false;//地形遮挡效果开关，打开后地形会遮挡看不到的区域
+  // viewer.scene.globe.depthTestAgainstTerrain = false;//地形遮挡效果开关，打开后地形会遮挡看不到的区域
   viewer.scene.globe.showGroundAtmosphere = false;
   viewer.scene.globe.enableLighting = true; //对大气和雾启用动态照明效果
 
@@ -136,51 +142,70 @@ const init = () => {
     console.log("当前经纬度坐标：", lng, lat, height);
   }, Cesium.ScreenSpaceEventType.LEFT_CLICK)
 
-  // 加载glb模型
-  // 模型移动
-  // let startPosition = new Cesium.Cartesian3.fromDegrees(110.04061649606402, 23.44348302026688);
-  // let endPosition = new Cesium.Cartesian3.fromDegrees(110.04711609957151, 23.43851227376917);
-  // let factor = 0;
-  // let position = new Cesium.CallbackProperty(function () {
-  //   if (factor > 5000) {
-  //     factor = 0;
-  //   }
-  //   factor++;
-  //   // 动态更新位置
-  //   return Cesium.Cartesian3.lerp(startPosition, endPosition, factor / 5000.0, new Cesium.Cartesian3());
-  // }, false)
-
-  // //模型视角
-  // let heading = Cesium.Math.toRadians(45.0);
-  // let pitch = Cesium.Math.toRadians(15.0);
-  // let roll = Cesium.Math.toRadians(0.0);
-  // let orientation = Cesium.Transforms.headingPitchRollQuaternion(startPosition, new Cesium.HeadingPitchRoll(heading, pitch, roll));
-
-  // const modelEntity = viewer.entities.add({
-  //   name: "人物glb模型",
-  //   orientation: orientation,
-  //   position: position,
-  //   model: {
-  //     uri: '/models/Cesium_Man.glb',
-  //     scale: 50.0,
-  //     // minimumPixelSize: 256,
-  //     // maxumunScale: 500,
-  //     incrementallyLoadTextures: true, // 加载模型后纹理是否可以继续流入
-  //     runAnimations: true, // 是否应启动模型中指定的glTF动画
-  //     // heightReference: Cesium.HeightReference.CLAMP_TO_GROUND //设置模型贴地,
-  //   },
-  // });
-
-  // 聚焦模型
-  // viewer.trackedEntity = modelEntity;
+  /*
+   // 加载glb模型
+   // 模型移动
+   // let startPosition = new Cesium.Cartesian3.fromDegrees(110.04061649606402, 23.44348302026688);
+   // let endPosition = new Cesium.Cartesian3.fromDegrees(110.04711609957151, 23.43851227376917);
+   // let factor = 0;
+   // let position = new Cesium.CallbackProperty(function () {
+   //   if (factor > 5000) {
+   //     factor = 0;
+   //   }
+   //   factor++;
+   //   // 动态更新位置
+   //   return Cesium.Cartesian3.lerp(startPosition, endPosition, factor / 5000.0, new Cesium.Cartesian3());
+   // }, false)
+ 
+   // //模型视角
+   // let heading = Cesium.Math.toRadians(45.0);
+   // let pitch = Cesium.Math.toRadians(15.0);
+   // let roll = Cesium.Math.toRadians(0.0);
+   // let orientation = Cesium.Transforms.headingPitchRollQuaternion(startPosition, new Cesium.HeadingPitchRoll(heading, pitch, roll));
+ 
+   // const modelEntity = viewer.entities.add({
+   //   name: "人物glb模型",
+   //   orientation: orientation,
+   //   position: position,
+   //   model: {
+   //     uri: '/models/Cesium_Man.glb',
+   //     scale: 50.0,
+   //     // minimumPixelSize: 256,
+   //     // maxumunScale: 500,
+   //     incrementallyLoadTextures: true, // 加载模型后纹理是否可以继续流入
+   //     runAnimations: true, // 是否应启动模型中指定的glTF动画
+   //     // heightReference: Cesium.HeightReference.CLAMP_TO_GROUND //设置模型贴地,
+   //   },
+   // });
+ 
+   // 聚焦模型
+   // viewer.trackedEntity = modelEntity;
+  */
 
   // 添加3D Tiles
+  // viewer.scene.globe.depthTestAgainstTerrain = true
   let tilesetModel = new Cesium.Cesium3DTileset({
-    url: "/public/3dtiles/Tile_+032_+003/tileset.json"
+    // url: tileset_032003,
+    // url: tileset_032004,
+    // url: tileset_033003,
+    // url: tileset_033004,
+    // url: tileset_034003,
+    // url: tileset_034004,
+    url: '/public/3dtiles/Tile_+032_+003/tileset.json',
   });
-  console.log(tilesetModel)
-
   viewer.scene.primitives.add(tilesetModel);
+  console.log(tilesetModel)
+  tilesetModel.readyPromise
+    .then(function (currentModel) {
+      console.log('111')
+      console.log(currentModel)
+    })
+    .otherwise(function (error) {
+      new Error(error);
+    })
+
+  // 聚焦模型
+  // viewer.trackedEntity = tilesetModel;
 
   console.log("viewer", viewer)
 
