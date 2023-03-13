@@ -7,7 +7,7 @@ import { onMounted, inject } from "vue";
 import { getFlylineMaterial, parabola, curvePlotting } from "./texture"
 import { FN_3dtiles } from "./fixGltf";
 
-let Cesium = inject("$Cesium")
+let Cesium: any = inject("$Cesium")
 
 let geoCoordMap: any = {
   //地理坐标
@@ -62,8 +62,8 @@ const init = () => {
       shouldAnimate: true,
       navigationInstructionsInitiallyVisible: false,
       navigation: false,
-      sceneMode: 3,
-      scene3DOnly: false,
+      sceneMode: 3, //初始场景模式 1 2D模式 2 2D循环模式 3 3D模式  Cesium.SceneMode
+      scene3DOnly: true, //每个几何实例将只能以3D渲染以节省GPU内存
       contextOptions: {
         requestWebgl2: true,
         webgl: {
@@ -134,6 +134,7 @@ const init = () => {
     let lat = Cesium.Math.toDegrees(cartographic.latitude);
     let lng = Cesium.Math.toDegrees(cartographic.longitude);
     let height = cartographic.height;
+    console.log("世界坐标", cartographic, position);
     console.log("当前经纬度坐标：", lng, lat, height);
   }, Cesium.ScreenSpaceEventType.LEFT_CLICK)
 
@@ -178,34 +179,27 @@ const init = () => {
   */
 
   // 添加3D Tiles
-  FN_3dtiles(Cesium)
-  // viewer.scene.globe.depthTestAgainstTerrain = true
-  let tilesetModel = new Cesium.Cesium3DTileset({
-    url: '/3dtiles/Tile_+032_+003/tileset.json',
-    // modelMatrix: new Cesium.Matrix4.fromArray([
-    //   1.0, 0.0, 0.0, 0.0,
-    //   0.0, 1.0, 0.0, 0.0,
-    //   0.0, 0.0, 1.0, 0.0,
-    //   114.2321730316198, 22.300849401205425, 1600, 1.0
-    // ]), //转移矩阵
-  })
-  viewer.scene.primitives.add(tilesetModel);
+  FN_3dtiles(Cesium)  //可支持3dtiles加载
+  viewer.scene.globe.depthTestAgainstTerrain = false  //开启地下可视化
 
-  let boundingSphere = null;
-  tilesetModel.readyPromise
+  let Model032003 = new Cesium.Cesium3DTileset({
+    url: '/3dtiles/Tile_+032_+003/tileset.json',
+    //控制切片视角显示的数量，可调整性能
+    // maximumScreenSpaceError: 2,
+    // maximumNumberOfLoadedTiles: 1000000,
+  })
+  viewer.scene.primitives.add(Model032003);
+
+  Model032003.readyPromise
     .then(function (currentModel) {
       console.log('111')
-      boundingSphere = tilesetModel.boundingSphere;
-      viewer.camera.viewBoundingSphere(boundingSphere, new Cesium.HeadingPitchRange(0, -2.0, 0));
-      viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+      let modelMat4 = Cesium.Transforms.eastNorthUpToFixedFrame({x: -2423050.03872055, y: 5383722.916320668, z: 2405409.108669254});
+      Model032003.modelMatrix = modelMat4;//指定根节点变换矩阵
+      viewer.camera.flyToBoundingSphere(Model032003.boundingSphere);
     })
     .otherwise(function (error) {
       new Error(error);
     })
-
-
-  // 聚焦模型
-  // viewer.trackedEntity = tilesetModel;
 
   console.log("viewer", viewer)
 
