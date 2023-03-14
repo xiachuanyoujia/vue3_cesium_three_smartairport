@@ -192,10 +192,26 @@ const init = () => {
 
   Model032003.readyPromise
     .then(function (currentModel) {
-      console.log('111')
-      let modelMat4 = Cesium.Transforms.eastNorthUpToFixedFrame({x: -2423050.03872055, y: 5383722.916320668, z: 2405409.108669254});
+      let modelMat4 = Cesium.Transforms.eastNorthUpToFixedFrame({ x: -2423050.03872055, y: 5383722.916320668, z: 2405409.108669254 });
       Model032003.modelMatrix = modelMat4;//指定根节点变换矩阵
       viewer.camera.flyToBoundingSphere(Model032003.boundingSphere);
+
+      // console.log(Model032003.boundingSphere.center)
+      // console.log(Cesium.Cartographic.fromCartesian({x: -2423047.7656314825, y: 5383719.148781581, z: 2405419.7590291416}))
+      // // //根据tileset的边界球体中心点的笛卡尔坐标得到经纬度坐标
+      // // var cartographic = Cesium.Cartographic.fromCartesian(Model032003.boundingSphere.center);
+      // // //根据经纬度和高度0，得到地面笛卡尔坐标
+      // // var surface = Cesium.Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, cartographic.height);
+      // // //根据经纬度和需要的高度，得到偏移后的笛卡尔坐标
+      // // // var offset = Cesium.Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, 60);
+      // // var offset = Cesium.Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, 0);
+      // // //计算坐标变换，得到新的笛卡尔坐标
+      // // var translation = Cesium.Cartesian3.subtract(offset, surface, new Cesium.Cartesian3());
+      // // //调整3dtiles位置
+      // // Model032003.modelMatrix = Cesium.Matrix4.fromTranslation(translation);
+      // // viewer.camera.flyToBoundingSphere(Model032003.boundingSphere);
+
+
     })
     .otherwise(function (error) {
       new Error(error);
