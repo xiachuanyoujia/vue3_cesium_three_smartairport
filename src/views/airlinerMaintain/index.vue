@@ -189,27 +189,43 @@ const init = () => {
     // maximumNumberOfLoadedTiles: 1000000,
   })
   viewer.scene.primitives.add(Model032003);
+  // 显示3D Tiles包围盒
+  Model032003.debugShowContentBoundingVolume = true
+  //开启3DTiles 监视器
+  // viewer.extend(Cesium.viewerCesium3DTilesInspectorMixin)
+
+  // 设定3D Tiles的位置及大小参数
+  let params = {
+    tx: 114.1782999999999, // 模型中心x轴坐标（经度，单位：十进制）
+    ty: 22.324031786505302, // 模型中心y轴坐标（经度，单位：十进制）
+    tz: 0, // 模型中心y轴坐标（高程，单位：米）
+    rx: 0, // x轴（经度）方向旋转角度（单位：度）
+    ry: 0, // y轴（纬度）方向旋转角度（单位：度）
+    rz: 0, // z轴（高程）方向旋转角度（单位：度）
+    scale: 0.9, // 缩放比例
+  }
 
   Model032003.readyPromise
     .then(function (currentModel) {
-      let modelMat4 = Cesium.Transforms.eastNorthUpToFixedFrame({ x: -2423050.03872055, y: 5383722.916320668, z: 2405409.108669254 });
-      Model032003.modelMatrix = modelMat4;//指定根节点变换矩阵
-      viewer.camera.flyToBoundingSphere(Model032003.boundingSphere);
-
-      // console.log(Model032003.boundingSphere.center)
-      // console.log(Cesium.Cartographic.fromCartesian({x: -2423047.7656314825, y: 5383719.148781581, z: 2405419.7590291416}))
-      // // //根据tileset的边界球体中心点的笛卡尔坐标得到经纬度坐标
-      // // var cartographic = Cesium.Cartographic.fromCartesian(Model032003.boundingSphere.center);
-      // // //根据经纬度和高度0，得到地面笛卡尔坐标
-      // // var surface = Cesium.Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, cartographic.height);
-      // // //根据经纬度和需要的高度，得到偏移后的笛卡尔坐标
-      // // // var offset = Cesium.Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, 60);
-      // // var offset = Cesium.Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, 0);
-      // // //计算坐标变换，得到新的笛卡尔坐标
-      // // var translation = Cesium.Cartesian3.subtract(offset, surface, new Cesium.Cartesian3());
-      // // //调整3dtiles位置
-      // // Model032003.modelMatrix = Cesium.Matrix4.fromTranslation(translation);
-      // // viewer.camera.flyToBoundingSphere(Model032003.boundingSphere);
+      let position = Cesium.Cartesian3.fromDegrees(
+        params.tx,
+        params.ty,
+        params.tz
+      )
+      let mat = Cesium.Transforms.eastNorthUpToFixedFrame(position)
+      let scale = Cesium.Matrix4.fromUniformScale(params.scale)
+      let mx = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(params.rx))
+      let my = Cesium.Matrix3.fromRotationY(Cesium.Math.toRadians(params.ry))
+      let mz = Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(params.rz))
+      let rotationX = Cesium.Matrix4.fromRotationTranslation(mx)
+      let rotationY = Cesium.Matrix4.fromRotationTranslation(my)
+      let rotationZ = Cesium.Matrix4.fromRotationTranslation(mz)
+      Cesium.Matrix4.multiply(mat, scale, mat)
+      Cesium.Matrix4.multiply(mat, rotationX, mat)
+      Cesium.Matrix4.multiply(mat, rotationY, mat)
+      Cesium.Matrix4.multiply(mat, rotationZ, mat)
+      Model032003._root.transform = mat
+      viewer.zoomTo(Model032003, new Cesium.HeadingPitchRange(0, -1, 1000))
 
 
     })
