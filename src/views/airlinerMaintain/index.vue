@@ -5,7 +5,7 @@
 <script lang="ts" setup>
 import { onMounted, inject } from "vue";
 import { getFlylineMaterial, parabola, curvePlotting } from "./texture"
-import { FN_3dtiles } from "./fixGltf";
+import { FN_3dtiles, TilesPositionSizing } from "./fixGltf";
 
 let Cesium: any = inject("$Cesium")
 
@@ -37,7 +37,7 @@ onMounted(() => {
   init()
 })
 
-const init = () => {
+const init = async () => {
   let viewer = new Cesium.Viewer("containerEarth", {
     infoBox: false,
     shouldAnimate: true, //配置为自动播放动画
@@ -181,8 +181,9 @@ const init = () => {
   // 添加3D Tiles
   FN_3dtiles(Cesium)  //可支持3dtiles加载
   viewer.scene.globe.depthTestAgainstTerrain = false  //开启地下可视化
-
-  let Model032003 = new Cesium.Cesium3DTileset({
+  //开启3DTiles 监视器
+  // viewer.extend(Cesium.viewerCesium3DTilesInspectorMixin)
+  let Model032003 = await new Cesium.Cesium3DTileset({
     url: '/3dtiles/Tile_+032_+003/tileset.json',
     //控制切片视角显示的数量，可调整性能
     // maximumScreenSpaceError: 2,
@@ -190,44 +191,16 @@ const init = () => {
   })
   viewer.scene.primitives.add(Model032003);
   // 显示3D Tiles包围盒
-  Model032003.debugShowContentBoundingVolume = true
-  //开启3DTiles 监视器
-  // viewer.extend(Cesium.viewerCesium3DTilesInspectorMixin)
+  // Model032003.debugShowContentBoundingVolume = true
+
 
   // 设定3D Tiles的位置及大小参数
-  let params = {
-    tx: 114.1782999999999, // 模型中心x轴坐标（经度，单位：十进制）
-    ty: 22.324031786505302, // 模型中心y轴坐标（经度，单位：十进制）
-    tz: 0, // 模型中心y轴坐标（高程，单位：米）
-    rx: 0, // x轴（经度）方向旋转角度（单位：度）
-    ry: 0, // y轴（纬度）方向旋转角度（单位：度）
-    rz: 0, // z轴（高程）方向旋转角度（单位：度）
-    scale: 0.9, // 缩放比例
-  }
-
   Model032003.readyPromise
     .then(function (currentModel) {
-      let position = Cesium.Cartesian3.fromDegrees(
-        params.tx,
-        params.ty,
-        params.tz
-      )
-      let mat = Cesium.Transforms.eastNorthUpToFixedFrame(position)
-      let scale = Cesium.Matrix4.fromUniformScale(params.scale)
-      let mx = Cesium.Matrix3.fromRotationX(Cesium.Math.toRadians(params.rx))
-      let my = Cesium.Matrix3.fromRotationY(Cesium.Math.toRadians(params.ry))
-      let mz = Cesium.Matrix3.fromRotationZ(Cesium.Math.toRadians(params.rz))
-      let rotationX = Cesium.Matrix4.fromRotationTranslation(mx)
-      let rotationY = Cesium.Matrix4.fromRotationTranslation(my)
-      let rotationZ = Cesium.Matrix4.fromRotationTranslation(mz)
-      Cesium.Matrix4.multiply(mat, scale, mat)
-      Cesium.Matrix4.multiply(mat, rotationX, mat)
-      Cesium.Matrix4.multiply(mat, rotationY, mat)
-      Cesium.Matrix4.multiply(mat, rotationZ, mat)
-      Model032003._root.transform = mat
+      let tx = 114.1782999999999
+      let ty = 22.324031786505302
+      TilesPositionSizing(tx, ty, Model032003, Cesium)
       viewer.zoomTo(Model032003, new Cesium.HeadingPitchRange(0, -1, 1000))
-
-
     })
     .otherwise(function (error) {
       new Error(error);
@@ -259,7 +232,6 @@ const addPointPosition = (longitudeAndLatitude: string, viewer, name) => {
     }
   });
 }
-
 
 </script>
 
