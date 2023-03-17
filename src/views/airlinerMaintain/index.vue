@@ -162,6 +162,8 @@ const init = async () => {
 
 
 
+
+
   // 添加3D Tiles
   FN_3dtiles(Cesium)  //可支持3dtiles加载
   viewer.scene.globe.depthTestAgainstTerrain = false  //开启地下可视化
@@ -194,8 +196,8 @@ const init = async () => {
   // /*
   // 加载glb模型
   // 模型移动
-  let startPosition = new Cesium.Cartesian3.fromDegrees(114.23133146445602, 22.299635416019086);
-  let endPosition = new Cesium.Cartesian3.fromDegrees(114.2357764841939, 22.30276820750512,10);
+  let startPosition = new Cesium.Cartesian3.fromDegrees(114.23133146445602, 22.299635416019086, 100);
+  let endPosition = new Cesium.Cartesian3.fromDegrees(114.2357764841939, 22.30276820750512, 100);
   let factor = 0;
   let position = new Cesium.CallbackProperty(function () {
     if (factor > 5000) {
@@ -217,8 +219,8 @@ const init = async () => {
     orientation: orientation,
     position: position,
     model: {
-      uri: '/models/Cesium_Man.glb',
-      scale: 20.0,
+      uri: '/models/CesiumDrone.glb',
+      scale: 1.0,
       // minimumPixelSize: 256,
       // maxumunScale: 500,
       incrementallyLoadTextures: true, // 加载模型后纹理是否可以继续流入
