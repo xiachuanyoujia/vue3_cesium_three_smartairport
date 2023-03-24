@@ -209,13 +209,13 @@ const init = async () => {
   }, false)
 
   //模型视角
-  let heading = Cesium.Math.toRadians(-20.0);
-  let pitch = Cesium.Math.toRadians(15.0);
+  let heading = Cesium.Math.toRadians(-35.0);
+  let pitch = Cesium.Math.toRadians(30.0);
   let roll = Cesium.Math.toRadians(0.0);
   let orientation = Cesium.Transforms.headingPitchRollQuaternion(startPosition, new Cesium.HeadingPitchRoll(heading, pitch, roll));
 
   const modelEntity = viewer.entities.add({
-    name: "人物glb模型",
+    name: "UAVmodel",
     orientation: orientation,
     position: position,
     model: {
@@ -231,6 +231,13 @@ const init = async () => {
 
   // 聚焦模型
   viewer.trackedEntity = modelEntity;
+  // 将相机聚焦到实体对象附近
+  // viewer.zoomTo(modelEntity);
+
+  // 打印模型的位置和相机的位置
+  console.log('Model Position:', modelEntity.position.getValue(viewer.clock.currentTime));
+  console.log('Camera Position:', viewer.camera.position);
+
   // */
 
   console.log("viewer", viewer)
