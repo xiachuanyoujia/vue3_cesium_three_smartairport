@@ -106,6 +106,7 @@ const init = async () => {
   viewer.scene.globe.enableLighting = true; //对大气和雾启用动态照明效果
 
   //配置地球相机初始位置
+  /*
   viewer.camera.setView({
     destination: Cesium.Cartesian3.fromDegrees(
       // 116.588627,
@@ -119,6 +120,7 @@ const init = async () => {
       roll: 0.0,
     },
   });
+  */
 
   //设置默认的视角为中国
   Cesium.Camera.DEFAULT_VIEW_RECTANGLE = Cesium.Rectangle.fromDegrees(
@@ -139,7 +141,6 @@ const init = async () => {
     geoCoordMapArr.push(geoCoordMap[key])
   }
 
-
   for (let i = 0, newi = 1; i < geoCoordMapArr.length; i++, newi++) {
     if (i % 2 == 1) continue
     if (newi == geoCoordMapArr.length) break
@@ -159,10 +160,6 @@ const init = async () => {
     console.log("世界坐标", cartographic, position);
     console.log("当前经纬度坐标：", lng, lat, height);
   }, Cesium.ScreenSpaceEventType.LEFT_CLICK)
-
-
-
-
 
   // 添加3D Tiles
   FN_3dtiles(Cesium)  //可支持3dtiles加载
@@ -217,7 +214,8 @@ const init = async () => {
   const modelEntity = viewer.entities.add({
     name: "UAVmodel",
     orientation: orientation,
-    position: position,
+    // position: position,
+    position: new Cesium.Cartesian3.fromDegrees(114.23133146445602, 22.299635416019086, 100),
     model: {
       uri: '/models/CesiumDrone.glb',
       scale: 1.0,
@@ -230,14 +228,31 @@ const init = async () => {
   });
 
   // 聚焦模型
-  viewer.trackedEntity = modelEntity;
-  // 将相机聚焦到实体对象附近
-  // viewer.zoomTo(modelEntity);
+  // -2423133.3513023104,5383924.851185663,2405160.7010041582
+  // viewer.trackedEntity = modelEntity;
 
-  // 打印模型的位置和相机的位置
-  console.log('Model Position:', modelEntity.position.getValue(viewer.clock.currentTime));
-  console.log('Camera Position:', viewer.camera.position);
+  // modelEntity.position._value = Cesium.Cartesian3.fromDegrees(114.23133146445602, 22.299635416019086,50)
 
+  viewer.camera.setView({
+    destination: Cesium.Cartesian3.fromDegrees(114.23133146445602, 22.299635416019086,150),
+    orientation: {
+      heading: Cesium.Math.toRadians(0),
+      pitch: Cesium.Math.toRadians(-90),
+      roll: Cesium.Math.toRadians(55)
+    },
+    range: 0
+  });
+
+  //打印当前模型位置
+  // console.log("当前模型位置1", modelEntity.position._value)
+  // console.log("当前模型位置1", modelEntity.position)
+  // console.log("当前模型位置2", viewer.trackedEntity.position._value)
+
+  console.log("当前模型位置", modelEntity)
+  //实时打印当前相机位置
+  viewer.camera.moveEnd.addEventListener(function () {
+    console.log("当前相机位置", viewer.camera.positionWC)
+  })
   // */
 
   console.log("viewer", viewer)

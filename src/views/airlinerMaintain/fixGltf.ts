@@ -69,22 +69,6 @@ function FN_3dtiles(Cesium: any) {
       });
     }
   };
-  // Object.defineProperties(Cesium.Model.prototype, {
-  //   _cachedGltf: {
-  //     set: function (value) {
-  //       this._vtxf_cachedGltf = value;
-
-  //       if (this._vtxf_cachedGltf && this._vtxf_cachedGltf._gltf) {
-  //         fixGltf(this._vtxf_cachedGltf._gltf);
-  //       }
-  //     },
-
-  //     get: function () {
-  //       return this._vtxf_cachedGltf;
-  //     },
-  //   },
-  // });
-
   if (!Cesium.Model.prototype._cachedGltfDefined) {
     Object.defineProperties(Cesium.Model.prototype, {
       _cachedGltf: {
