@@ -69,21 +69,41 @@ function FN_3dtiles(Cesium: any) {
       });
     }
   };
-  Object.defineProperties(Cesium.Model.prototype, {
-    _cachedGltf: {
-      set: function (value) {
-        this._vtxf_cachedGltf = value;
+  // Object.defineProperties(Cesium.Model.prototype, {
+  //   _cachedGltf: {
+  //     set: function (value) {
+  //       this._vtxf_cachedGltf = value;
 
-        if (this._vtxf_cachedGltf && this._vtxf_cachedGltf._gltf) {
-          fixGltf(this._vtxf_cachedGltf._gltf);
-        }
-      },
+  //       if (this._vtxf_cachedGltf && this._vtxf_cachedGltf._gltf) {
+  //         fixGltf(this._vtxf_cachedGltf._gltf);
+  //       }
+  //     },
 
-      get: function () {
-        return this._vtxf_cachedGltf;
+  //     get: function () {
+  //       return this._vtxf_cachedGltf;
+  //     },
+  //   },
+  // });
+
+  if (!Cesium.Model.prototype._cachedGltfDefined) {
+    Object.defineProperties(Cesium.Model.prototype, {
+      _cachedGltf: {
+        set: function (value) {
+          this._vtxf_cachedGltf = value;
+
+          if (this._vtxf_cachedGltf && this._vtxf_cachedGltf._gltf) {
+            fixGltf(this._vtxf_cachedGltf._gltf);
+          }
+        },
+
+        get: function () {
+          return this._vtxf_cachedGltf;
+        },
       },
-    },
-  });
+    });
+
+    Cesium.Model.prototype._cachedGltfDefined = true;
+  }
 }
 //设定3D Tiles的位置及大小参数
 function TilesPositionSizing(
