@@ -5,7 +5,7 @@
 <script lang="ts" setup>
 import { onMounted, inject } from "vue";
 import { getFlylineMaterial, parabola, curvePlotting } from "./texture"
-import { FN_3dtiles, TilesPositionSizing } from "./fixGltf";
+import { FN_3dtiles, TilesPositionSizing,AllModelList } from "./fixGltf";
 
 let Cesium: any = inject("$Cesium")
 
@@ -32,28 +32,6 @@ let geoCoordMap: any = {
   // 桂平: [110.08, 23.40],
   桂平: [110.04061649606402, 23.44348302026688],
 }
-//全部3D Tiles
-let AllModelList = [
-  {
-    name: 'Model032003',
-    url: '/3dtiles/Tile_+032_+003/tileset.json',
-  }, {
-    name: 'Model032004',
-    url: '/3dtiles/Tile_+032_+004/tileset.json',
-  }, {
-    name: 'Model033003',
-    url: '/3dtiles/Tile_+033_+003/tileset.json',
-  }, {
-    name: 'Model033004',
-    url: '/3dtiles/Tile_+033_+004/tileset.json',
-  }, {
-    name: 'Model034003',
-    url: '/3dtiles/Tile_+034_+003/tileset.json',
-  }, {
-    name: 'Model034004',
-    url: '/3dtiles/Tile_+034_+004/tileset.json',
-  },
-]
 
 onMounted(() => {
   init()
@@ -106,13 +84,13 @@ const init = async () => {
   viewer.scene.globe.enableLighting = true; //对大气和雾启用动态照明效果
 
   //配置地球相机初始位置
-  /*
+  // /*
   viewer.camera.setView({
     destination: Cesium.Cartesian3.fromDegrees(
       // 116.588627,
       // 40.078398,
       // 25000000.0
-      114.2321730316198, 22.300849401205425, 1600
+      114.2321730316198, 22.294849401205425, 6000
     ),
     orientation: {
       heading: Cesium.Math.toRadians(0, 0),
@@ -120,7 +98,7 @@ const init = async () => {
       roll: 0.0,
     },
   });
-  */
+  // */
 
   //设置默认的视角为中国
   Cesium.Camera.DEFAULT_VIEW_RECTANGLE = Cesium.Rectangle.fromDegrees(
@@ -190,7 +168,7 @@ const init = async () => {
       })
   }
 
-  // /*
+  /*
   // 加载glb模型
   // 模型移动
   let startPosition = new Cesium.Cartesian3.fromDegrees(114.23133146445602, 22.299635416019086, 100);
@@ -214,8 +192,7 @@ const init = async () => {
   const modelEntity = viewer.entities.add({
     name: "UAVmodel",
     orientation: orientation,
-    // position: position,
-    position: new Cesium.Cartesian3.fromDegrees(114.23133146445602, 22.299635416019086, 100),
+    position: position,
     model: {
       uri: '/models/CesiumDrone.glb',
       scale: 1.0,
@@ -228,32 +205,15 @@ const init = async () => {
   });
 
   // 聚焦模型
-  // -2423133.3513023104,5383924.851185663,2405160.7010041582
-  // viewer.trackedEntity = modelEntity;
+  viewer.trackedEntity = modelEntity;
 
-  // modelEntity.position._value = Cesium.Cartesian3.fromDegrees(114.23133146445602, 22.299635416019086,50)
+  */
 
-  viewer.camera.setView({
-    destination: Cesium.Cartesian3.fromDegrees(114.23133146445602, 22.299635416019086,150),
-    orientation: {
-      heading: Cesium.Math.toRadians(0),
-      pitch: Cesium.Math.toRadians(-90),
-      roll: Cesium.Math.toRadians(55)
-    },
-    range: 0
-  });
-
-  //打印当前模型位置
-  // console.log("当前模型位置1", modelEntity.position._value)
-  // console.log("当前模型位置1", modelEntity.position)
-  // console.log("当前模型位置2", viewer.trackedEntity.position._value)
-
-  console.log("当前模型位置", modelEntity)
   //实时打印当前相机位置
-  viewer.camera.moveEnd.addEventListener(function () {
-    console.log("当前相机位置", viewer.camera.positionWC)
-  })
-  // */
+  // viewer.camera.moveEnd.addEventListener(function () {
+  //   console.log("当前相机位置", viewer.camera.positionWC)
+  // })
+ 
 
   console.log("viewer", viewer)
 
