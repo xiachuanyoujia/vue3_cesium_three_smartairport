@@ -123,99 +123,99 @@ function TilesPositionSizing(
 }
 //全部3D Tiles
 const AllModelList = [
-  {
-    name: "Model032003",
-    url: "/3dtiles/Tile_+032_+003/tileset.json",
-  },
-  {
-    name: "Model032004",
-    url: "/3dtiles/Tile_+032_+004/tileset.json",
-  },
-  {
-    name: "Model033003",
-    url: "/3dtiles/Tile_+033_+003/tileset.json",
-  },
-  {
-    name: "Model033004",
-    url: "/3dtiles/Tile_+033_+004/tileset.json",
-  },
-  {
-    name: "Model034003",
-    url: "/3dtiles/Tile_+034_+003/tileset.json",
-  },
-  {
-    name: "Model034004",
-    url: "/3dtiles/Tile_+034_+004/tileset.json",
-  },
-  //
-  {
-    name: "Model032002",
-    url: "/3dtiles/Tile_+032_+002/tileset.json",
-  },
-  {
-    name: "Model033000",
-    url: "/3dtiles/Tile_+033_+000/tileset.json",
-  },
-  {
-    name: "Model033001",
-    url: "/3dtiles/Tile_+033_+001/tileset.json",
-  },
-  {
-    name: "Model033002",
-    url: "/3dtiles/Tile_+033_+002/tileset.json",
-  },
-  {
-    name: "Model034000",
-    url: "/3dtiles/Tile_+034_+000/tileset.json",
-  },
-  {
-    name: "Model034001",
-    url: "/3dtiles/Tile_+034_+001/tileset.json",
-  },
-  {
-    name: "Model034002",
-    url: "/3dtiles/Tile_+034_+002/tileset.json",
-  },
-  {
-    name: "Model035000",
-    url: "/3dtiles/Tile_+035_+000/tileset.json",
-  },
-  {
-    name: "Model035001",
-    url: "/3dtiles/Tile_+035_+001/tileset.json",
-  },
-  {
-    name: "Model035002",
-    url: "/3dtiles/Tile_+035_+002/tileset.json",
-  },
-  {
-    name: "Model035003",
-    url: "/3dtiles/Tile_+035_+003/tileset.json",
-  },
-  {
-    name: "Model035004",
-    url: "/3dtiles/Tile_+035_+004/tileset.json",
-  },
-  {
-    name: "Model036000",
-    url: "/3dtiles/Tile_+036_+000/tileset.json",
-  },
+  // {
+  //   name: "Model032003",
+  //   url: "/3dtiles/Tile_+032_+003/tileset.json",
+  // },
+  // {
+  //   name: "Model032004",
+  //   url: "/3dtiles/Tile_+032_+004/tileset.json",
+  // },
+  // {
+  //   name: "Model033003",
+  //   url: "/3dtiles/Tile_+033_+003/tileset.json",
+  // },
+  // {
+  //   name: "Model033004",
+  //   url: "/3dtiles/Tile_+033_+004/tileset.json",
+  // },
+  // {
+  //   name: "Model034003",
+  //   url: "/3dtiles/Tile_+034_+003/tileset.json",
+  // },
+  // {
+  //   name: "Model034004",
+  //   url: "/3dtiles/Tile_+034_+004/tileset.json",
+  // },
+  // //
+  // {
+  //   name: "Model032002",
+  //   url: "/3dtiles/Tile_+032_+002/tileset.json",
+  // },
+  // {
+  //   name: "Model033000",
+  //   url: "/3dtiles/Tile_+033_+000/tileset.json",
+  // },
+  // {
+  //   name: "Model033001",
+  //   url: "/3dtiles/Tile_+033_+001/tileset.json",
+  // },
+  // {
+  //   name: "Model033002",
+  //   url: "/3dtiles/Tile_+033_+002/tileset.json",
+  // },
+  // {
+  //   name: "Model034000",
+  //   url: "/3dtiles/Tile_+034_+000/tileset.json",
+  // },
+  // {
+  //   name: "Model034001",
+  //   url: "/3dtiles/Tile_+034_+001/tileset.json",
+  // },
+  // {
+  //   name: "Model034002",
+  //   url: "/3dtiles/Tile_+034_+002/tileset.json",
+  // },
+  // {
+  //   name: "Model035000",
+  //   url: "/3dtiles/Tile_+035_+000/tileset.json",
+  // },
+  // {
+  //   name: "Model035001",
+  //   url: "/3dtiles/Tile_+035_+001/tileset.json",
+  // },
+  // {
+  //   name: "Model035002",
+  //   url: "/3dtiles/Tile_+035_+002/tileset.json",
+  // },
+  // {
+  //   name: "Model035003",
+  //   url: "/3dtiles/Tile_+035_+003/tileset.json",
+  // },
+  // {
+  //   name: "Model035004",
+  //   url: "/3dtiles/Tile_+035_+004/tileset.json",
+  // },
+  // {
+  //   name: "Model036000",
+  //   url: "/3dtiles/Tile_+036_+000/tileset.json",
+  // },
   
-  {
-    name: "Model036001",
-    url: "/3dtiles/Tile_+036_+001/tileset.json",
-  },
-  {
-    name: "Model036002",
-    url: "/3dtiles/Tile_+036_+002/tileset.json",
-  },
-  {
-    name: "Model036003",
-    url: "/3dtiles/Tile_+036_+003/tileset.json",
-  },
-  {
-    name: "Model036004",
-    url: "/3dtiles/Tile_+036_+004/tileset.json",
-  },
+  // {
+  //   name: "Model036001",
+  //   url: "/3dtiles/Tile_+036_+001/tileset.json",
+  // },
+  // {
+  //   name: "Model036002",
+  //   url: "/3dtiles/Tile_+036_+002/tileset.json",
+  // },
+  // {
+  //   name: "Model036003",
+  //   url: "/3dtiles/Tile_+036_+003/tileset.json",
+  // },
+  // {
+  //   name: "Model036004",
+  //   url: "/3dtiles/Tile_+036_+004/tileset.json",
+  // },
 ];
 export { FN_3dtiles, TilesPositionSizing,AllModelList };
