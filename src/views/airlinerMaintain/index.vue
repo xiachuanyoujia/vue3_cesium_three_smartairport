@@ -168,7 +168,7 @@ const init = async () => {
       })
   }
 
-  /*
+  // /*
   // 加载glb模型
   // 模型移动
   let startPosition = new Cesium.Cartesian3.fromDegrees(114.23133146445602, 22.299635416019086, 100);
@@ -192,7 +192,8 @@ const init = async () => {
   const modelEntity = viewer.entities.add({
     name: "UAVmodel",
     orientation: orientation,
-    position: position,
+    // position: position,
+    position: Cesium.Cartesian3.fromDegrees(114.23133146445602, 22.299635416019086, 100),
     model: {
       uri: '/models/CesiumDrone.glb',
       scale: 1.0,
@@ -207,7 +208,24 @@ const init = async () => {
   // 聚焦模型
   viewer.trackedEntity = modelEntity;
 
-  */
+  //调整聚焦模型的视角高度
+  viewer.zoomTo(modelEntity, new Cesium.HeadingPitchRange(Cesium.Math.toRadians(54), Cesium.Math.toRadians(-20), 100))
+
+  //添加事件，让modelEntity模型实时跟随鼠标移动，视角也跟随鼠标移动，速度为每秒30米的速度
+  viewer.screenSpaceEventHandler.setInputAction(function (movement) {
+    let cartesian = viewer.camera.pickEllipsoid(movement.endPosition, viewer.scene.globe.ellipsoid);
+    if (cartesian) {
+      modelEntity.position = cartesian;
+      viewer.trackedEntity = modelEntity;
+    }
+  }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+
+  // */
+
+  // 实时打印绘制缓冲区大小
+  // viewer.scene.postRender.addEventListener(function () {
+  //   console.log("绘制缓冲区大小", viewer.scene.context._gl.drawingBufferWidth, viewer.scene.context._gl.drawingBufferHeight)
+  // })
 
   //实时打印当前相机位置
   // viewer.camera.moveEnd.addEventListener(function () {
