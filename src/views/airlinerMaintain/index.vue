@@ -82,6 +82,8 @@ const init = async () => {
   // viewer.scene.globe.depthTestAgainstTerrain = false;//地形遮挡效果开关，打开后地形会遮挡看不到的区域
   viewer.scene.globe.showGroundAtmosphere = false;
   viewer.scene.globe.enableLighting = true; //对大气和雾启用动态照明效果
+  //开启HDR效果
+  viewer.scene.highDynamicRange = true;
 
   //配置地球相机初始位置
   // /*
@@ -210,15 +212,63 @@ const init = async () => {
 
   //调整聚焦模型的视角高度
   viewer.zoomTo(modelEntity, new Cesium.HeadingPitchRange(Cesium.Math.toRadians(54), Cesium.Math.toRadians(-20), 100))
-
-  //添加事件，让modelEntity模型实时跟随鼠标移动，视角也跟随鼠标移动，速度为每秒30米的速度
-  viewer.screenSpaceEventHandler.setInputAction(function (movement) {
-    let cartesian = viewer.camera.pickEllipsoid(movement.endPosition, viewer.scene.globe.ellipsoid);
-    if (cartesian) {
-      modelEntity.position = cartesian;
-      viewer.trackedEntity = modelEntity;
+  
+  //添加方向键控制模型移动
+  let moveModel = function (direction) {
+    let moveRate = 10;
+    let moveVector;
+    let camera = viewer.camera;
+    let cameraHeading = camera.heading;
+    let cameraPitch = camera.pitch;
+    let cameraRoll = camera.roll;
+    switch (direction) {
+      case 'W':
+        moveVector = new Cesium.Cartesian3(-Math.sin(cameraHeading) * moveRate, Math.cos(cameraHeading) * moveRate, 0);
+        break;
+      case 'S':
+        moveVector = new Cesium.Cartesian3(Math.sin(cameraHeading) * moveRate, -Math.cos(cameraHeading) * moveRate, 0);
+        break;
+      case 'A':
+        moveVector = new Cesium.Cartesian3(-Math.cos(cameraHeading) * moveRate, -Math.sin(cameraHeading) * moveRate, 0);
+        break;
+      case 'D':
+        moveVector = new Cesium.Cartesian3(Math.cos(cameraHeading) * moveRate, Math.sin(cameraHeading) * moveRate, 0);
+        break;
+      case 'Q':
+        moveVector = new Cesium.Cartesian3(0, 0, -moveRate);
+        break;
+      case 'E':
+        moveVector = new Cesium.Cartesian3(0, 0, moveRate);
+        break;
     }
-  }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+    let position = Cesium.Cartesian3.add(modelEntity.position._value, moveVector, new Cesium.Cartesian3());
+    modelEntity.position = position;
+    viewer.trackedEntity = modelEntity;
+    console.log('当前模型位置', modelEntity.position._value)
+  }
+  //触发moveModel函数
+  document.addEventListener('keydown', function (e) {
+    switch (e.key) {
+      case 'w':
+        moveModel('W');
+        break;
+      case 's':
+        moveModel('S');
+        break;
+      case 'a':
+        moveModel('A');
+        break;
+      case 'd':
+        moveModel('D');
+        break;
+      case 'q':
+        moveModel('Q');
+        break;
+      case 'e':
+        moveModel('E');
+        break;
+    }
+  });
 
   // */
 
